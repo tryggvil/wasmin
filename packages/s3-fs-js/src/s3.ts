@@ -53,7 +53,6 @@ import {
     DeleteBucketCommand,
     GetObjectRequest,
 } from "@aws-sdk/client-s3";
-import * as console from "node:console";
 
 const DefaultMaxKeys = 1000;
 const DefaultCacheTTL = 1000;
@@ -64,10 +63,66 @@ declare global {
 }
 globalThis.S3_DEBUG = false;
 
+export function isBun() {
+    // only bun has global Bun
+    try {
+        // @ts-ignore
+        return globalThis.Bun != null;
+    } catch (e) {
+        return false;
+    }
+}
+
+export function isNode() {
+    if (isBun()) {
+        return false;
+    } else if (isDeno()) {
+        return false;
+    } else {
+        // node.js/bun/deno have global process class
+        return globalThis.process != null;
+    }
+}
+
+export function isDeno() {
+    // only deno has global Deno
+    try {
+        // @ts-ignore
+        return globalThis.Deno != null;
+    } catch (e) {
+        return false;
+    }
+}
+
+export function isNodeorDeno() {
+    if (isDeno()) {
+        return true;
+    } else {
+        return isNode();
+    }
+}
+
+export function isNodeorBunorDeno() {
+    if (isDeno()) {
+        return true;
+    } else {
+        return isNodeorBun();
+    }
+}
+
+export function isNodeorBun() {
+    return globalThis.process != null;
+}
 
 function s3Debug(message?: any, ...optionalParams: any[]) {
     if (globalThis.S3_DEBUG) {
-        console.debug(message, optionalParams);
+        if (isNodeorDeno()){
+            import("node:console").then((console) => {
+                console.debug(message, optionalParams);
+            });
+        } else {
+            console.debug(message, optionalParams);
+        }
     }
 }
 

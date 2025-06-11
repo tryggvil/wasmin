@@ -3,10 +3,12 @@
   "type": "module",
   "version": "0.7.0",
   "scripts": {
+    "predev": "cp ../../packages/shell/nu.async.wasm ./public/",
     "dev": "vite",
     "devssl": "vite -c vite.config.ssl.js",
+    "prebuild": "cp ../../packages/shell/nu.async.wasm ./public/",
     "build": "tsc && vite build",
-    "serve": "vite preview"
+    "serve": "vite preview -c vite.config.ssl.js"
   },
   "devDependencies": {
     "@netapplabs/tsconfig": "^0.7.0",
@@ -20,6 +22,7 @@
     "@netapplabs/github-fs-js": "^0.7.0",
     "@netapplabs/nfs-js": "^0.7.0",
     "@netapplabs/s3-fs-js": "^0.7.0",
+    "@netapplabs/shell": "^0.7.0",
     "@netapplabs/wasi-js": "^0.7.0",
     "@xterm/addon-fit": "^0.10.0",
     "@xterm/addon-image": "^0.8.0",
