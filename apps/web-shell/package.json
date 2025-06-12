@@ -3,17 +3,20 @@
   "type": "module",
   "version": "0.7.0",
   "scripts": {
-    "predev": "cp ../../packages/shell/nu.async.wasm ./public/",
+    "predev": "mkdir -p ./public && cp ../../packages/shell/nu.async.wasm ./public/ && cp ../../node_modules/coi-serviceworker/coi-serviceworker.js ./public/",
     "dev": "vite",
     "devssl": "vite -c vite.config.ssl.js",
-    "prebuild": "cp ../../packages/shell/nu.async.wasm ./public/",
+    "prebuild": "mkdir -p ./public && cp ../../packages/shell/nu.async.wasm ./public/ && cp ../../node_modules/coi-serviceworker/coi-serviceworker.js ./public/",
     "build": "tsc && vite build",
-    "serve": "vite preview -c vite.config.ssl.js"
+    "serve": "vite preview -c vite.config.ssl.js",
+    "predeploy": "cp ./public/nu.async.wasm ./dist/",
+    "deploy": "gh-pages -f -d dist"
   },
   "devDependencies": {
     "@netapplabs/tsconfig": "^0.7.0",
     "@vitejs/plugin-basic-ssl": "^1.2.0",
     "@web/rollup-plugin-import-meta-assets": "^2.2.1",
+    "gh-pages": "^6.2.0",
     "vite": "^6.3.5"
   },
   "dependencies": {
@@ -27,6 +30,7 @@
     "@xterm/addon-fit": "^0.10.0",
     "@xterm/addon-image": "^0.8.0",
     "@xterm/addon-webgl": "^0.18.0",
-    "@xterm/xterm": "^5.5.0"
+    "@xterm/xterm": "^5.5.0",
+    "coi-serviceworker": "^0.1.7"
   }
 }

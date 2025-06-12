@@ -45,12 +45,8 @@ const WEB_SHELL_REGISTER_S3 = true;
 const WEB_SHELL_REGISTER_NFS = false;
 const TERM_REQUEST_CURSOR_POS = "\x1b[6n";
 
-let globalOpfs = (globalThis as any).WEB_SHELL_USE_OPFS;
-const searchParams = new URLSearchParams(window.location.search);
-let sParamOpfs = searchParams.get("opfs");
-let paramOpfs = (sParamOpfs == "true") ? true : false;
-let useOPFS =  globalOpfs || paramOpfs || false;
 
+const searchParams = new URLSearchParams(window.location.search);
 let globalWorker = (globalThis as any).WEB_SHELL_USE_WORKER;
 let sParamWorker = searchParams.get("worker");
 let paramWorker = (sParamWorker == "true") ? true : false;
@@ -66,6 +62,33 @@ if (isChrome && isSafari) {
 function isHttps() {
     return document.location.protocol == "https:";
 }
+
+function getUseOpfs() {
+    //let globalOpfs = (globalThis as any).WEB_SHELL_USE_OPFS;
+    let sParamOpfs = searchParams.get("opfs");
+    let paramOpfs = (sParamOpfs == "true") ? true : false;
+    let paramNotUseOpfs = (sParamOpfs == "false") ? true : false;
+    //let userUseOpfs =  globalOpfs || paramOpfs || false;
+    let browserAvailableOpfs = false;
+    if (isHttps()) {
+        //OPFS getDirectory is only available in secure contexts
+        if (navigator.storage.getDirectory !== undefined) {
+            // @ts-ignore
+            // Only enable if FileSystemWritableFileStream is available
+            if (globalThis.FileSystemWritableFileStream !== undefined) {
+                if (paramNotUseOpfs) {
+                    browserAvailableOpfs = false;
+                } else {
+                    browserAvailableOpfs = true;
+                }
+            }
+        }
+    }
+
+    return browserAvailableOpfs;
+}
+
+let useOPFS = getUseOpfs();
 
 console.log(navigator.userAgent);
 console.log(`isSafari: ${isSafari}`);
@@ -241,6 +264,11 @@ if (WEB_SHELL_REGISTER_NFS) {
   );
   */
 
+    let currentFsUsed = "indexeddb";
+    if (useOPFS) {
+        currentFsUsed = "OPFS";
+    }
+
     term.open(document.body);
     if (!isSafari) {
         term.loadAddon(new WebglAddon());
@@ -273,7 +301,7 @@ if (WEB_SHELL_REGISTER_NFS) {
     const module = WebAssembly.compileStreaming(fetch(moduleUrl));
 
     writeIndented(`
-    # Right now you have / mounted to a persisted per browser (indexeddb) filesystem:
+    # Right now you have / mounted to a persisted per browser (${currentFsUsed}) filesystem:
     / > df
     ╭───┬────────────┬────────┬─────────╮
     │ # │ filesystem │ device │ mounted │
@@ -394,17 +422,6 @@ if (WEB_SHELL_REGISTER_NFS) {
         }
     };
  
-    //if (isSafari) {
-    //    // Safari has not support for FileSystemFileHandle.createWritable , so disabling it for now
-    //    useOPFS = false;
-    //} else {
-    if (isHttps()) {
-        //OPFS getDirectory is only available in secure contexts
-        if (navigator.storage.getDirectory !== undefined) {
-            useOPFS = true;
-        }
-    }
-    //}
 
     // Request persistent storage
     if (navigator.storage && navigator.storage.persist) {

@@ -39,7 +39,6 @@ yarn-error.log*
 
 *.log
 
-nu.async.wasm
 sea-prep.blob
 /wasmin-node*
 /wasmin-bun*

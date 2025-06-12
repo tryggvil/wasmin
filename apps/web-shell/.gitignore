@@ -5,5 +5,5 @@ dist-ssr
 *.local
 
 *.log
-public/*.wasm
+public
 *.wasm
