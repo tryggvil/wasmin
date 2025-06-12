@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "stat.h": "c",
+        "__locale": "c",
+        "locale": "c"
+    },
+    "deno.enable": false
+}

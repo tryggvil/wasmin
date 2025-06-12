@@ -1,0 +1,8 @@
+node_modules
+assets
+.DS_Store
+dist
+dist-ssr
+*.local
+*.wasm
+sea-config.json

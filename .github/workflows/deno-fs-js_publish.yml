@@ -1,0 +1,75 @@
+name: Publish deno-fs-js Package
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'packages/deno-fs-js/**'
+
+concurrency:
+  group: packages-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@netapplabs'
+      - name: setup-bun
+        uses: oven-sh/setup-bun@v2
+      - name: yarn
+        run: npm install --global yarn
+      - name: Set up GH Package Registry Auth
+        run: echo "@netapplabs:registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
+      - name: yarn-install
+        run: yarn install --frozen-lock-file
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build
+        run: yarn build
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: vx.x.x
+
+      - name: Run Deno Tests
+        run: deno task test
+        working-directory: packages/deno-fs-js
+
+      - name: Setup git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Bump version
+        run: npx standard-version -t packages/deno-fs-js@
+        working-directory: packages/deno-fs-js
+
+      - name: Build package
+        run: npm run build --prefix .
+        working-directory: packages/deno-fs-js
+
+      - name: Publish package
+        run: npm publish --prefix .
+        working-directory: packages/deno-fs-js
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit and push version bump
+        run: |
+          git push

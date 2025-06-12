@@ -1,0 +1,107 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "wasi-tester",
+            "program": "${workspaceFolder}/packages/wasi-js/tests/tester.mjs",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "env": {},
+            "type": "node"
+        },
+        {
+            "name": "wasi-tester-bun",
+            "program": "${workspaceFolder}/packages/wasi-js/tests/tester.mjs",
+            "request": "launch",
+            "env": {},
+            "type": "bun"
+        },
+        {
+            "request": "launch",
+            "name": "wasi-tester-deno",
+            "type": "node",
+            "program": "${workspaceFolder}/packages/wasi-js/tests/tester.mjs",
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "deno",
+            "runtimeArgs": [
+                "run"
+            ],
+            "args": [],
+            "attachSimplePort": 9229
+        },
+        {
+            "name": "wasi-tester-suite",
+            "args": ["--trace-warnings"],
+            "program": "${workspaceFolder}/packages/wasi-js/tests/tester.suite.mjs",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "env": {},
+            "type": "node"
+        },
+        {
+            "name": "wasi-tester-suite-bun",
+            "program": "${workspaceFolder}/packages/wasi-js/tests/tester.suite.mjs",
+            "request": "launch",
+            "env": {},
+            "type": "bun"
+        },
+        {
+            "name": "wasi-worker-run",
+            "program": "${workspaceFolder}/apps/node-shell/dist/index.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "env": {
+                "NODE_SHELL_WORKER": 1
+            },
+            "type": "node"
+        },
+        {
+            "name": "wasi-component-run",
+            "program": "${workspaceFolder}/apps/wasi-component/component/run.mjs",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+        {
+            "name": "wasi-reactor-run",
+            "program": "${workspaceFolder}/apps/wasi-reactor/component/run.mjs",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+        {
+            "name": "wasi-reactor-run-mod",
+            "program": "${workspaceFolder}/apps/wasi-reactor/component/run_mod.mjs",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "node"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/packages/wasi-js/src/wasi.ts",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ]
+        }
+    ]
+}
