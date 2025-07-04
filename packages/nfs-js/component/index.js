@@ -665,7 +665,9 @@ export class NfsFileHandle extends NfsHandle {
     async getFile() {
         return new Promise((resolve, reject) => {
             try {
-                const file = new NfsFile(this._mount, this._fh, this.name);
+                const res = this._mount.lookup(this._fhDir, this.name);
+                this._fh = res.obj;
+                const file = new NfsFile(this._mount, this._fh, this.name, res.attr);
                 return resolve(file);
             }
             catch (e) {
@@ -706,8 +708,10 @@ export class NfsFile {
     webkitRelativePath;
     size;
     type;
-    constructor(mount, fh, name) {
-        const attr = mount.getattr(fh);
+    constructor(mount, fh, name, attr) {
+        if (!attr) {
+            attr = mount.getattr(fh);
+        }
         this.prototype = new File([], name);
         this._mount = mount;
         this._fh = fh;

@@ -15,9 +15,11 @@
         "build": "tsc -p .",
         "transpile": "./transpile.sh",
         "test": "./test.sh",
+        "test-4p1": "./test4p1.sh",
         "bun-test": "./test-bun.sh"
     },
     "devDependencies": {
+        "@bytecodealliance/jco": "1.10.2",
         "@netapplabs/tsconfig": "^0.7.0",
         "vitest": "^3.1.3"
     },

@@ -153,7 +153,7 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
     let captureCnt4 = 0;
     handleTables[4] = handleTable4;
     
-    function trampoline8() {
+    function trampoline5() {
       const ret = instanceNetwork();
       if (!(ret instanceof Network)) {
         throw new TypeError('Resource error: Not a valid "Network" resource.');
@@ -174,78 +174,16 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
       return toUint64(ret);
     }
     
+    const handleTable2 = [T_FLAG, 0];
+    const captureTable2= new Map();
+    let captureCnt2 = 0;
+    handleTables[2] = handleTable2;
     const handleTable0 = [T_FLAG, 0];
     const captureTable0= new Map();
     let captureCnt0 = 0;
     handleTables[0] = handleTable0;
     
     function trampoline14(arg0) {
-      const ret = subscribeDuration(BigInt.asUintN(64, arg0));
-      if (!(ret instanceof Pollable)) {
-        throw new TypeError('Resource error: Not a valid "Pollable" resource.');
-      }
-      var handle0 = ret[symbolRscHandle];
-      if (!handle0) {
-        const rep = ret[symbolRscRep] || ++captureCnt0;
-        captureTable0.set(rep, ret);
-        handle0 = rscTableCreateOwn(handleTable0, rep);
-      }
-      return handle0;
-    }
-    
-    
-    function trampoline15(arg0) {
-      const ret = subscribeInstant(BigInt.asUintN(64, arg0));
-      if (!(ret instanceof Pollable)) {
-        throw new TypeError('Resource error: Not a valid "Pollable" resource.');
-      }
-      var handle0 = ret[symbolRscHandle];
-      if (!handle0) {
-        const rep = ret[symbolRscRep] || ++captureCnt0;
-        captureTable0.set(rep, ret);
-        handle0 = rscTableCreateOwn(handleTable0, rep);
-      }
-      return handle0;
-    }
-    
-    const handleTable3 = [T_FLAG, 0];
-    const captureTable3= new Map();
-    let captureCnt3 = 0;
-    handleTables[3] = handleTable3;
-    
-    function trampoline16(arg0) {
-      var handle1 = arg0;
-      var rep2 = handleTable3[(handle1 << 1) + 1] & ~T_FLAG;
-      var rsc0 = captureTable3.get(rep2);
-      if (!rsc0) {
-        rsc0 = Object.create(OutputStream.prototype);
-        Object.defineProperty(rsc0, symbolRscHandle, { writable: true, value: handle1});
-        Object.defineProperty(rsc0, symbolRscRep, { writable: true, value: rep2});
-      }
-      curResourceBorrows.push(rsc0);
-      const ret = rsc0.subscribe();
-      for (const rsc of curResourceBorrows) {
-        rsc[symbolRscHandle] = undefined;
-      }
-      curResourceBorrows = [];
-      if (!(ret instanceof Pollable)) {
-        throw new TypeError('Resource error: Not a valid "Pollable" resource.');
-      }
-      var handle3 = ret[symbolRscHandle];
-      if (!handle3) {
-        const rep = ret[symbolRscRep] || ++captureCnt0;
-        captureTable0.set(rep, ret);
-        handle3 = rscTableCreateOwn(handleTable0, rep);
-      }
-      return handle3;
-    }
-    
-    const handleTable2 = [T_FLAG, 0];
-    const captureTable2= new Map();
-    let captureCnt2 = 0;
-    handleTables[2] = handleTable2;
-    
-    function trampoline17(arg0) {
       var handle1 = arg0;
       var rep2 = handleTable2[(handle1 << 1) + 1] & ~T_FLAG;
       var rsc0 = captureTable2.get(rep2);
@@ -272,6 +210,68 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
       return handle3;
     }
     
+    const handleTable3 = [T_FLAG, 0];
+    const captureTable3= new Map();
+    let captureCnt3 = 0;
+    handleTables[3] = handleTable3;
+    
+    function trampoline15(arg0) {
+      var handle1 = arg0;
+      var rep2 = handleTable3[(handle1 << 1) + 1] & ~T_FLAG;
+      var rsc0 = captureTable3.get(rep2);
+      if (!rsc0) {
+        rsc0 = Object.create(OutputStream.prototype);
+        Object.defineProperty(rsc0, symbolRscHandle, { writable: true, value: handle1});
+        Object.defineProperty(rsc0, symbolRscRep, { writable: true, value: rep2});
+      }
+      curResourceBorrows.push(rsc0);
+      const ret = rsc0.subscribe();
+      for (const rsc of curResourceBorrows) {
+        rsc[symbolRscHandle] = undefined;
+      }
+      curResourceBorrows = [];
+      if (!(ret instanceof Pollable)) {
+        throw new TypeError('Resource error: Not a valid "Pollable" resource.');
+      }
+      var handle3 = ret[symbolRscHandle];
+      if (!handle3) {
+        const rep = ret[symbolRscRep] || ++captureCnt0;
+        captureTable0.set(rep, ret);
+        handle3 = rscTableCreateOwn(handleTable0, rep);
+      }
+      return handle3;
+    }
+    
+    
+    function trampoline16(arg0) {
+      const ret = subscribeDuration(BigInt.asUintN(64, arg0));
+      if (!(ret instanceof Pollable)) {
+        throw new TypeError('Resource error: Not a valid "Pollable" resource.');
+      }
+      var handle0 = ret[symbolRscHandle];
+      if (!handle0) {
+        const rep = ret[symbolRscRep] || ++captureCnt0;
+        captureTable0.set(rep, ret);
+        handle0 = rscTableCreateOwn(handleTable0, rep);
+      }
+      return handle0;
+    }
+    
+    
+    function trampoline17(arg0) {
+      const ret = subscribeInstant(BigInt.asUintN(64, arg0));
+      if (!(ret instanceof Pollable)) {
+        throw new TypeError('Resource error: Not a valid "Pollable" resource.');
+      }
+      var handle0 = ret[symbolRscHandle];
+      if (!handle0) {
+        const rep = ret[symbolRscRep] || ++captureCnt0;
+        captureTable0.set(rep, ret);
+        handle0 = rscTableCreateOwn(handleTable0, rep);
+      }
+      return handle0;
+    }
+    
     
     function trampoline19() {
       const ret = getStderr();
@@ -288,7 +288,37 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
     }
     
     
-    function trampoline20(arg0) {
+    function trampoline20() {
+      const ret = getStdin();
+      if (!(ret instanceof InputStream)) {
+        throw new TypeError('Resource error: Not a valid "InputStream" resource.');
+      }
+      var handle0 = ret[symbolRscHandle];
+      if (!handle0) {
+        const rep = ret[symbolRscRep] || ++captureCnt2;
+        captureTable2.set(rep, ret);
+        handle0 = rscTableCreateOwn(handleTable2, rep);
+      }
+      return handle0;
+    }
+    
+    
+    function trampoline21() {
+      const ret = getStdout();
+      if (!(ret instanceof OutputStream)) {
+        throw new TypeError('Resource error: Not a valid "OutputStream" resource.');
+      }
+      var handle0 = ret[symbolRscHandle];
+      if (!handle0) {
+        const rep = ret[symbolRscRep] || ++captureCnt3;
+        captureTable3.set(rep, ret);
+        handle0 = rscTableCreateOwn(handleTable3, rep);
+      }
+      return handle0;
+    }
+    
+    
+    function trampoline22(arg0) {
       let variant0;
       switch (arg0) {
         case 0: {
@@ -312,58 +342,50 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
       exit(variant0);
     }
     
-    
-    function trampoline21() {
-      const ret = getStdin();
-      if (!(ret instanceof InputStream)) {
-        throw new TypeError('Resource error: Not a valid "InputStream" resource.');
-      }
-      var handle0 = ret[symbolRscHandle];
-      if (!handle0) {
-        const rep = ret[symbolRscRep] || ++captureCnt2;
-        captureTable2.set(rep, ret);
-        handle0 = rscTableCreateOwn(handleTable2, rep);
-      }
-      return handle0;
-    }
-    
-    
-    function trampoline22() {
-      const ret = getStdout();
-      if (!(ret instanceof OutputStream)) {
-        throw new TypeError('Resource error: Not a valid "OutputStream" resource.');
-      }
-      var handle0 = ret[symbolRscHandle];
-      if (!handle0) {
-        const rep = ret[symbolRscRep] || ++captureCnt3;
-        captureTable3.set(rep, ret);
-        handle0 = rscTableCreateOwn(handleTable3, rep);
-      }
-      return handle0;
-    }
-    
     let exports2;
     let memory0;
     let realloc0;
     let realloc1;
-    const handleTable5 = [T_FLAG, 0];
-    const captureTable5= new Map();
-    let captureCnt5 = 0;
-    handleTables[5] = handleTable5;
+    const handleTable1 = [T_FLAG, 0];
+    const captureTable1= new Map();
+    let captureCnt1 = 0;
+    handleTables[1] = handleTable1;
     
     function trampoline23(arg0, arg1) {
       var handle1 = arg0;
-      var rep2 = handleTable5[(handle1 << 1) + 1] & ~T_FLAG;
-      var rsc0 = captureTable5.get(rep2);
+      var rep2 = handleTable1[(handle1 << 1) + 1] & ~T_FLAG;
+      var rsc0 = captureTable1.get(rep2);
       if (!rsc0) {
-        rsc0 = Object.create(ResolveAddressStream.prototype);
+        rsc0 = Object.create(Error$1.prototype);
+        Object.defineProperty(rsc0, symbolRscHandle, { writable: true, value: handle1});
+        Object.defineProperty(rsc0, symbolRscRep, { writable: true, value: rep2});
+      }
+      curResourceBorrows.push(rsc0);
+      const ret = rsc0.toDebugString();
+      for (const rsc of curResourceBorrows) {
+        rsc[symbolRscHandle] = undefined;
+      }
+      curResourceBorrows = [];
+      var ptr3 = utf8Encode(ret, realloc0, memory0);
+      var len3 = utf8EncodedLen;
+      dataView(memory0).setInt32(arg1 + 4, len3, true);
+      dataView(memory0).setInt32(arg1 + 0, ptr3, true);
+    }
+    
+    
+    function trampoline24(arg0, arg1, arg2) {
+      var handle1 = arg0;
+      var rep2 = handleTable2[(handle1 << 1) + 1] & ~T_FLAG;
+      var rsc0 = captureTable2.get(rep2);
+      if (!rsc0) {
+        rsc0 = Object.create(InputStream.prototype);
         Object.defineProperty(rsc0, symbolRscHandle, { writable: true, value: handle1});
         Object.defineProperty(rsc0, symbolRscRep, { writable: true, value: rep2});
       }
       curResourceBorrows.push(rsc0);
       let ret;
       try {
-        ret = { tag: 'ok', val: rsc0.resolveNextAddress()};
+        ret = { tag: 'ok', val: rsc0.blockingRead(BigInt.asUintN(64, arg1))};
       } catch (e) {
         ret = { tag: 'err', val: getErrorPayload(e) };
       }
@@ -371,149 +393,48 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
         rsc[symbolRscHandle] = undefined;
       }
       curResourceBorrows = [];
-      var variant8 = ret;
-      switch (variant8.tag) {
+      var variant6 = ret;
+      switch (variant6.tag) {
         case 'ok': {
-          const e = variant8.val;
-          dataView(memory0).setInt8(arg1 + 0, 0, true);
-          var variant6 = e;
-          if (variant6 === null || variant6=== undefined) {
-            dataView(memory0).setInt8(arg1 + 2, 0, true);
-          } else {
-            const e = variant6;
-            dataView(memory0).setInt8(arg1 + 2, 1, true);
-            var variant5 = e;
-            switch (variant5.tag) {
-              case 'ipv4': {
-                const e = variant5.val;
-                dataView(memory0).setInt8(arg1 + 4, 0, true);
-                var [tuple3_0, tuple3_1, tuple3_2, tuple3_3] = e;
-                dataView(memory0).setInt8(arg1 + 6, toUint8(tuple3_0), true);
-                dataView(memory0).setInt8(arg1 + 7, toUint8(tuple3_1), true);
-                dataView(memory0).setInt8(arg1 + 8, toUint8(tuple3_2), true);
-                dataView(memory0).setInt8(arg1 + 9, toUint8(tuple3_3), true);
-                break;
-              }
-              case 'ipv6': {
-                const e = variant5.val;
-                dataView(memory0).setInt8(arg1 + 4, 1, true);
-                var [tuple4_0, tuple4_1, tuple4_2, tuple4_3, tuple4_4, tuple4_5, tuple4_6, tuple4_7] = e;
-                dataView(memory0).setInt16(arg1 + 6, toUint16(tuple4_0), true);
-                dataView(memory0).setInt16(arg1 + 8, toUint16(tuple4_1), true);
-                dataView(memory0).setInt16(arg1 + 10, toUint16(tuple4_2), true);
-                dataView(memory0).setInt16(arg1 + 12, toUint16(tuple4_3), true);
-                dataView(memory0).setInt16(arg1 + 14, toUint16(tuple4_4), true);
-                dataView(memory0).setInt16(arg1 + 16, toUint16(tuple4_5), true);
-                dataView(memory0).setInt16(arg1 + 18, toUint16(tuple4_6), true);
-                dataView(memory0).setInt16(arg1 + 20, toUint16(tuple4_7), true);
-                break;
-              }
-              default: {
-                throw new TypeError(`invalid variant tag value \`${JSON.stringify(variant5.tag)}\` (received \`${variant5}\`) specified for \`IpAddress\``);
-              }
-            }
-          }
+          const e = variant6.val;
+          dataView(memory0).setInt8(arg2 + 0, 0, true);
+          var val3 = e;
+          var len3 = val3.byteLength;
+          var ptr3 = realloc0(0, 0, 1, len3 * 1);
+          var src3 = new Uint8Array(val3.buffer || val3, val3.byteOffset, len3 * 1);
+          (new Uint8Array(memory0.buffer, ptr3, len3 * 1)).set(src3);
+          dataView(memory0).setInt32(arg2 + 8, len3, true);
+          dataView(memory0).setInt32(arg2 + 4, ptr3, true);
           break;
         }
         case 'err': {
-          const e = variant8.val;
-          dataView(memory0).setInt8(arg1 + 0, 1, true);
-          var val7 = e;
-          let enum7;
-          switch (val7) {
-            case 'unknown': {
-              enum7 = 0;
+          const e = variant6.val;
+          dataView(memory0).setInt8(arg2 + 0, 1, true);
+          var variant5 = e;
+          switch (variant5.tag) {
+            case 'last-operation-failed': {
+              const e = variant5.val;
+              dataView(memory0).setInt8(arg2 + 4, 0, true);
+              if (!(e instanceof Error$1)) {
+                throw new TypeError('Resource error: Not a valid "Error" resource.');
+              }
+              var handle4 = e[symbolRscHandle];
+              if (!handle4) {
+                const rep = e[symbolRscRep] || ++captureCnt1;
+                captureTable1.set(rep, e);
+                handle4 = rscTableCreateOwn(handleTable1, rep);
+              }
+              dataView(memory0).setInt32(arg2 + 8, handle4, true);
               break;
             }
-            case 'access-denied': {
-              enum7 = 1;
-              break;
-            }
-            case 'not-supported': {
-              enum7 = 2;
-              break;
-            }
-            case 'invalid-argument': {
-              enum7 = 3;
-              break;
-            }
-            case 'out-of-memory': {
-              enum7 = 4;
-              break;
-            }
-            case 'timeout': {
-              enum7 = 5;
-              break;
-            }
-            case 'concurrency-conflict': {
-              enum7 = 6;
-              break;
-            }
-            case 'not-in-progress': {
-              enum7 = 7;
-              break;
-            }
-            case 'would-block': {
-              enum7 = 8;
-              break;
-            }
-            case 'invalid-state': {
-              enum7 = 9;
-              break;
-            }
-            case 'new-socket-limit': {
-              enum7 = 10;
-              break;
-            }
-            case 'address-not-bindable': {
-              enum7 = 11;
-              break;
-            }
-            case 'address-in-use': {
-              enum7 = 12;
-              break;
-            }
-            case 'remote-unreachable': {
-              enum7 = 13;
-              break;
-            }
-            case 'connection-refused': {
-              enum7 = 14;
-              break;
-            }
-            case 'connection-reset': {
-              enum7 = 15;
-              break;
-            }
-            case 'connection-aborted': {
-              enum7 = 16;
-              break;
-            }
-            case 'datagram-too-large': {
-              enum7 = 17;
-              break;
-            }
-            case 'name-unresolvable': {
-              enum7 = 18;
-              break;
-            }
-            case 'temporary-resolver-failure': {
-              enum7 = 19;
-              break;
-            }
-            case 'permanent-resolver-failure': {
-              enum7 = 20;
+            case 'closed': {
+              dataView(memory0).setInt8(arg2 + 4, 1, true);
               break;
             }
             default: {
-              if ((e) instanceof Error) {
-                console.error(e);
-              }
-              
-              throw new TypeError(`"${val7}" is not one of the cases of error-code`);
+              throw new TypeError(`invalid variant tag value \`${JSON.stringify(variant5.tag)}\` (received \`${variant5}\`) specified for \`StreamError\``);
             }
           }
-          dataView(memory0).setInt8(arg1 + 2, enum7, true);
           break;
         }
         default: {
@@ -523,22 +444,87 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
     }
     
     
-    function trampoline24(arg0, arg1, arg2, arg3) {
+    function trampoline25(arg0, arg1) {
       var handle1 = arg0;
-      var rep2 = handleTable4[(handle1 << 1) + 1] & ~T_FLAG;
-      var rsc0 = captureTable4.get(rep2);
+      var rep2 = handleTable3[(handle1 << 1) + 1] & ~T_FLAG;
+      var rsc0 = captureTable3.get(rep2);
       if (!rsc0) {
-        rsc0 = Object.create(Network.prototype);
+        rsc0 = Object.create(OutputStream.prototype);
+        Object.defineProperty(rsc0, symbolRscHandle, { writable: true, value: handle1});
+        Object.defineProperty(rsc0, symbolRscRep, { writable: true, value: rep2});
+      }
+      curResourceBorrows.push(rsc0);
+      let ret;
+      try {
+        ret = { tag: 'ok', val: rsc0.checkWrite()};
+      } catch (e) {
+        ret = { tag: 'err', val: getErrorPayload(e) };
+      }
+      for (const rsc of curResourceBorrows) {
+        rsc[symbolRscHandle] = undefined;
+      }
+      curResourceBorrows = [];
+      var variant5 = ret;
+      switch (variant5.tag) {
+        case 'ok': {
+          const e = variant5.val;
+          dataView(memory0).setInt8(arg1 + 0, 0, true);
+          dataView(memory0).setBigInt64(arg1 + 8, toUint64(e), true);
+          break;
+        }
+        case 'err': {
+          const e = variant5.val;
+          dataView(memory0).setInt8(arg1 + 0, 1, true);
+          var variant4 = e;
+          switch (variant4.tag) {
+            case 'last-operation-failed': {
+              const e = variant4.val;
+              dataView(memory0).setInt8(arg1 + 8, 0, true);
+              if (!(e instanceof Error$1)) {
+                throw new TypeError('Resource error: Not a valid "Error" resource.');
+              }
+              var handle3 = e[symbolRscHandle];
+              if (!handle3) {
+                const rep = e[symbolRscRep] || ++captureCnt1;
+                captureTable1.set(rep, e);
+                handle3 = rscTableCreateOwn(handleTable1, rep);
+              }
+              dataView(memory0).setInt32(arg1 + 12, handle3, true);
+              break;
+            }
+            case 'closed': {
+              dataView(memory0).setInt8(arg1 + 8, 1, true);
+              break;
+            }
+            default: {
+              throw new TypeError(`invalid variant tag value \`${JSON.stringify(variant4.tag)}\` (received \`${variant4}\`) specified for \`StreamError\``);
+            }
+          }
+          break;
+        }
+        default: {
+          throw new TypeError('invalid variant specified for result');
+        }
+      }
+    }
+    
+    
+    function trampoline26(arg0, arg1, arg2, arg3) {
+      var handle1 = arg0;
+      var rep2 = handleTable3[(handle1 << 1) + 1] & ~T_FLAG;
+      var rsc0 = captureTable3.get(rep2);
+      if (!rsc0) {
+        rsc0 = Object.create(OutputStream.prototype);
         Object.defineProperty(rsc0, symbolRscHandle, { writable: true, value: handle1});
         Object.defineProperty(rsc0, symbolRscRep, { writable: true, value: rep2});
       }
       curResourceBorrows.push(rsc0);
       var ptr3 = arg1;
       var len3 = arg2;
-      var result3 = utf8Decoder.decode(new Uint8Array(memory0.buffer, ptr3, len3));
+      var result3 = new Uint8Array(memory0.buffer.slice(ptr3, ptr3 + len3 * 1));
       let ret;
       try {
-        ret = { tag: 'ok', val: resolveAddresses(rsc0, result3)};
+        ret = { tag: 'ok', val: rsc0.blockingWriteAndFlush(result3)};
       } catch (e) {
         ret = { tag: 'err', val: getErrorPayload(e) };
       }
@@ -551,117 +537,36 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
         case 'ok': {
           const e = variant6.val;
           dataView(memory0).setInt8(arg3 + 0, 0, true);
-          if (!(e instanceof ResolveAddressStream)) {
-            throw new TypeError('Resource error: Not a valid "ResolveAddressStream" resource.');
-          }
-          var handle4 = e[symbolRscHandle];
-          if (!handle4) {
-            const rep = e[symbolRscRep] || ++captureCnt5;
-            captureTable5.set(rep, e);
-            handle4 = rscTableCreateOwn(handleTable5, rep);
-          }
-          dataView(memory0).setInt32(arg3 + 4, handle4, true);
           break;
         }
         case 'err': {
           const e = variant6.val;
           dataView(memory0).setInt8(arg3 + 0, 1, true);
-          var val5 = e;
-          let enum5;
-          switch (val5) {
-            case 'unknown': {
-              enum5 = 0;
+          var variant5 = e;
+          switch (variant5.tag) {
+            case 'last-operation-failed': {
+              const e = variant5.val;
+              dataView(memory0).setInt8(arg3 + 4, 0, true);
+              if (!(e instanceof Error$1)) {
+                throw new TypeError('Resource error: Not a valid "Error" resource.');
+              }
+              var handle4 = e[symbolRscHandle];
+              if (!handle4) {
+                const rep = e[symbolRscRep] || ++captureCnt1;
+                captureTable1.set(rep, e);
+                handle4 = rscTableCreateOwn(handleTable1, rep);
+              }
+              dataView(memory0).setInt32(arg3 + 8, handle4, true);
               break;
             }
-            case 'access-denied': {
-              enum5 = 1;
-              break;
-            }
-            case 'not-supported': {
-              enum5 = 2;
-              break;
-            }
-            case 'invalid-argument': {
-              enum5 = 3;
-              break;
-            }
-            case 'out-of-memory': {
-              enum5 = 4;
-              break;
-            }
-            case 'timeout': {
-              enum5 = 5;
-              break;
-            }
-            case 'concurrency-conflict': {
-              enum5 = 6;
-              break;
-            }
-            case 'not-in-progress': {
-              enum5 = 7;
-              break;
-            }
-            case 'would-block': {
-              enum5 = 8;
-              break;
-            }
-            case 'invalid-state': {
-              enum5 = 9;
-              break;
-            }
-            case 'new-socket-limit': {
-              enum5 = 10;
-              break;
-            }
-            case 'address-not-bindable': {
-              enum5 = 11;
-              break;
-            }
-            case 'address-in-use': {
-              enum5 = 12;
-              break;
-            }
-            case 'remote-unreachable': {
-              enum5 = 13;
-              break;
-            }
-            case 'connection-refused': {
-              enum5 = 14;
-              break;
-            }
-            case 'connection-reset': {
-              enum5 = 15;
-              break;
-            }
-            case 'connection-aborted': {
-              enum5 = 16;
-              break;
-            }
-            case 'datagram-too-large': {
-              enum5 = 17;
-              break;
-            }
-            case 'name-unresolvable': {
-              enum5 = 18;
-              break;
-            }
-            case 'temporary-resolver-failure': {
-              enum5 = 19;
-              break;
-            }
-            case 'permanent-resolver-failure': {
-              enum5 = 20;
+            case 'closed': {
+              dataView(memory0).setInt8(arg3 + 4, 1, true);
               break;
             }
             default: {
-              if ((e) instanceof Error) {
-                console.error(e);
-              }
-              
-              throw new TypeError(`"${val5}" is not one of the cases of error-code`);
+              throw new TypeError(`invalid variant tag value \`${JSON.stringify(variant5.tag)}\` (received \`${variant5}\`) specified for \`StreamError\``);
             }
           }
-          dataView(memory0).setInt8(arg3 + 4, enum5, true);
           break;
         }
         default: {
@@ -675,7 +580,7 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
     let captureCnt6 = 0;
     handleTables[6] = handleTable6;
     
-    function trampoline25(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14) {
+    function trampoline27(arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14) {
       var handle1 = arg0;
       var rep2 = handleTable6[(handle1 << 1) + 1] & ~T_FLAG;
       var rsc0 = captureTable6.get(rep2);
@@ -847,7 +752,7 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
     }
     
     
-    function trampoline26(arg0, arg1) {
+    function trampoline28(arg0, arg1) {
       var handle1 = arg0;
       var rep2 = handleTable6[(handle1 << 1) + 1] & ~T_FLAG;
       var rsc0 = captureTable6.get(rep2);
@@ -1003,7 +908,7 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
     }
     
     
-    function trampoline27(arg0, arg1) {
+    function trampoline29(arg0, arg1) {
       var handle1 = arg0;
       var rep2 = handleTable6[(handle1 << 1) + 1] & ~T_FLAG;
       var rsc0 = captureTable6.get(rep2);
@@ -1174,7 +1079,7 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
     }
     
     
-    function trampoline28(arg0, arg1, arg2) {
+    function trampoline30(arg0, arg1, arg2) {
       var handle1 = arg0;
       var rep2 = handleTable6[(handle1 << 1) + 1] & ~T_FLAG;
       var rsc0 = captureTable6.get(rep2);
@@ -1326,237 +1231,8 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
       }
     }
     
-    const handleTable1 = [T_FLAG, 0];
-    const captureTable1= new Map();
-    let captureCnt1 = 0;
-    handleTables[1] = handleTable1;
-    
-    function trampoline29(arg0, arg1) {
-      var handle1 = arg0;
-      var rep2 = handleTable1[(handle1 << 1) + 1] & ~T_FLAG;
-      var rsc0 = captureTable1.get(rep2);
-      if (!rsc0) {
-        rsc0 = Object.create(Error$1.prototype);
-        Object.defineProperty(rsc0, symbolRscHandle, { writable: true, value: handle1});
-        Object.defineProperty(rsc0, symbolRscRep, { writable: true, value: rep2});
-      }
-      curResourceBorrows.push(rsc0);
-      const ret = rsc0.toDebugString();
-      for (const rsc of curResourceBorrows) {
-        rsc[symbolRscHandle] = undefined;
-      }
-      curResourceBorrows = [];
-      var ptr3 = utf8Encode(ret, realloc0, memory0);
-      var len3 = utf8EncodedLen;
-      dataView(memory0).setInt32(arg1 + 4, len3, true);
-      dataView(memory0).setInt32(arg1 + 0, ptr3, true);
-    }
-    
-    
-    function trampoline30(arg0, arg1, arg2) {
-      var handle1 = arg0;
-      var rep2 = handleTable2[(handle1 << 1) + 1] & ~T_FLAG;
-      var rsc0 = captureTable2.get(rep2);
-      if (!rsc0) {
-        rsc0 = Object.create(InputStream.prototype);
-        Object.defineProperty(rsc0, symbolRscHandle, { writable: true, value: handle1});
-        Object.defineProperty(rsc0, symbolRscRep, { writable: true, value: rep2});
-      }
-      curResourceBorrows.push(rsc0);
-      let ret;
-      try {
-        ret = { tag: 'ok', val: rsc0.blockingRead(BigInt.asUintN(64, arg1))};
-      } catch (e) {
-        ret = { tag: 'err', val: getErrorPayload(e) };
-      }
-      for (const rsc of curResourceBorrows) {
-        rsc[symbolRscHandle] = undefined;
-      }
-      curResourceBorrows = [];
-      var variant6 = ret;
-      switch (variant6.tag) {
-        case 'ok': {
-          const e = variant6.val;
-          dataView(memory0).setInt8(arg2 + 0, 0, true);
-          var val3 = e;
-          var len3 = val3.byteLength;
-          var ptr3 = realloc0(0, 0, 1, len3 * 1);
-          var src3 = new Uint8Array(val3.buffer || val3, val3.byteOffset, len3 * 1);
-          (new Uint8Array(memory0.buffer, ptr3, len3 * 1)).set(src3);
-          dataView(memory0).setInt32(arg2 + 8, len3, true);
-          dataView(memory0).setInt32(arg2 + 4, ptr3, true);
-          break;
-        }
-        case 'err': {
-          const e = variant6.val;
-          dataView(memory0).setInt8(arg2 + 0, 1, true);
-          var variant5 = e;
-          switch (variant5.tag) {
-            case 'last-operation-failed': {
-              const e = variant5.val;
-              dataView(memory0).setInt8(arg2 + 4, 0, true);
-              if (!(e instanceof Error$1)) {
-                throw new TypeError('Resource error: Not a valid "Error" resource.');
-              }
-              var handle4 = e[symbolRscHandle];
-              if (!handle4) {
-                const rep = e[symbolRscRep] || ++captureCnt1;
-                captureTable1.set(rep, e);
-                handle4 = rscTableCreateOwn(handleTable1, rep);
-              }
-              dataView(memory0).setInt32(arg2 + 8, handle4, true);
-              break;
-            }
-            case 'closed': {
-              dataView(memory0).setInt8(arg2 + 4, 1, true);
-              break;
-            }
-            default: {
-              throw new TypeError(`invalid variant tag value \`${JSON.stringify(variant5.tag)}\` (received \`${variant5}\`) specified for \`StreamError\``);
-            }
-          }
-          break;
-        }
-        default: {
-          throw new TypeError('invalid variant specified for result');
-        }
-      }
-    }
-    
     
     function trampoline31(arg0, arg1) {
-      var handle1 = arg0;
-      var rep2 = handleTable3[(handle1 << 1) + 1] & ~T_FLAG;
-      var rsc0 = captureTable3.get(rep2);
-      if (!rsc0) {
-        rsc0 = Object.create(OutputStream.prototype);
-        Object.defineProperty(rsc0, symbolRscHandle, { writable: true, value: handle1});
-        Object.defineProperty(rsc0, symbolRscRep, { writable: true, value: rep2});
-      }
-      curResourceBorrows.push(rsc0);
-      let ret;
-      try {
-        ret = { tag: 'ok', val: rsc0.checkWrite()};
-      } catch (e) {
-        ret = { tag: 'err', val: getErrorPayload(e) };
-      }
-      for (const rsc of curResourceBorrows) {
-        rsc[symbolRscHandle] = undefined;
-      }
-      curResourceBorrows = [];
-      var variant5 = ret;
-      switch (variant5.tag) {
-        case 'ok': {
-          const e = variant5.val;
-          dataView(memory0).setInt8(arg1 + 0, 0, true);
-          dataView(memory0).setBigInt64(arg1 + 8, toUint64(e), true);
-          break;
-        }
-        case 'err': {
-          const e = variant5.val;
-          dataView(memory0).setInt8(arg1 + 0, 1, true);
-          var variant4 = e;
-          switch (variant4.tag) {
-            case 'last-operation-failed': {
-              const e = variant4.val;
-              dataView(memory0).setInt8(arg1 + 8, 0, true);
-              if (!(e instanceof Error$1)) {
-                throw new TypeError('Resource error: Not a valid "Error" resource.');
-              }
-              var handle3 = e[symbolRscHandle];
-              if (!handle3) {
-                const rep = e[symbolRscRep] || ++captureCnt1;
-                captureTable1.set(rep, e);
-                handle3 = rscTableCreateOwn(handleTable1, rep);
-              }
-              dataView(memory0).setInt32(arg1 + 12, handle3, true);
-              break;
-            }
-            case 'closed': {
-              dataView(memory0).setInt8(arg1 + 8, 1, true);
-              break;
-            }
-            default: {
-              throw new TypeError(`invalid variant tag value \`${JSON.stringify(variant4.tag)}\` (received \`${variant4}\`) specified for \`StreamError\``);
-            }
-          }
-          break;
-        }
-        default: {
-          throw new TypeError('invalid variant specified for result');
-        }
-      }
-    }
-    
-    
-    function trampoline32(arg0, arg1, arg2, arg3) {
-      var handle1 = arg0;
-      var rep2 = handleTable3[(handle1 << 1) + 1] & ~T_FLAG;
-      var rsc0 = captureTable3.get(rep2);
-      if (!rsc0) {
-        rsc0 = Object.create(OutputStream.prototype);
-        Object.defineProperty(rsc0, symbolRscHandle, { writable: true, value: handle1});
-        Object.defineProperty(rsc0, symbolRscRep, { writable: true, value: rep2});
-      }
-      curResourceBorrows.push(rsc0);
-      var ptr3 = arg1;
-      var len3 = arg2;
-      var result3 = new Uint8Array(memory0.buffer.slice(ptr3, ptr3 + len3 * 1));
-      let ret;
-      try {
-        ret = { tag: 'ok', val: rsc0.blockingWriteAndFlush(result3)};
-      } catch (e) {
-        ret = { tag: 'err', val: getErrorPayload(e) };
-      }
-      for (const rsc of curResourceBorrows) {
-        rsc[symbolRscHandle] = undefined;
-      }
-      curResourceBorrows = [];
-      var variant6 = ret;
-      switch (variant6.tag) {
-        case 'ok': {
-          const e = variant6.val;
-          dataView(memory0).setInt8(arg3 + 0, 0, true);
-          break;
-        }
-        case 'err': {
-          const e = variant6.val;
-          dataView(memory0).setInt8(arg3 + 0, 1, true);
-          var variant5 = e;
-          switch (variant5.tag) {
-            case 'last-operation-failed': {
-              const e = variant5.val;
-              dataView(memory0).setInt8(arg3 + 4, 0, true);
-              if (!(e instanceof Error$1)) {
-                throw new TypeError('Resource error: Not a valid "Error" resource.');
-              }
-              var handle4 = e[symbolRscHandle];
-              if (!handle4) {
-                const rep = e[symbolRscRep] || ++captureCnt1;
-                captureTable1.set(rep, e);
-                handle4 = rscTableCreateOwn(handleTable1, rep);
-              }
-              dataView(memory0).setInt32(arg3 + 8, handle4, true);
-              break;
-            }
-            case 'closed': {
-              dataView(memory0).setInt8(arg3 + 4, 1, true);
-              break;
-            }
-            default: {
-              throw new TypeError(`invalid variant tag value \`${JSON.stringify(variant5.tag)}\` (received \`${variant5}\`) specified for \`StreamError\``);
-            }
-          }
-          break;
-        }
-        default: {
-          throw new TypeError('invalid variant specified for result');
-        }
-      }
-    }
-    
-    
-    function trampoline33(arg0, arg1) {
       let enum0;
       switch (arg0) {
         case 0: {
@@ -1701,33 +1377,347 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
       }
     }
     
-    const handleTable7 = [T_FLAG, 0];
-    const captureTable7= new Map();
-    let captureCnt7 = 0;
-    handleTables[7] = handleTable7;
+    const handleTable5 = [T_FLAG, 0];
+    const captureTable5= new Map();
+    let captureCnt5 = 0;
+    handleTables[5] = handleTable5;
+    
+    function trampoline32(arg0, arg1) {
+      var handle1 = arg0;
+      var rep2 = handleTable5[(handle1 << 1) + 1] & ~T_FLAG;
+      var rsc0 = captureTable5.get(rep2);
+      if (!rsc0) {
+        rsc0 = Object.create(ResolveAddressStream.prototype);
+        Object.defineProperty(rsc0, symbolRscHandle, { writable: true, value: handle1});
+        Object.defineProperty(rsc0, symbolRscRep, { writable: true, value: rep2});
+      }
+      curResourceBorrows.push(rsc0);
+      let ret;
+      try {
+        ret = { tag: 'ok', val: rsc0.resolveNextAddress()};
+      } catch (e) {
+        ret = { tag: 'err', val: getErrorPayload(e) };
+      }
+      for (const rsc of curResourceBorrows) {
+        rsc[symbolRscHandle] = undefined;
+      }
+      curResourceBorrows = [];
+      var variant8 = ret;
+      switch (variant8.tag) {
+        case 'ok': {
+          const e = variant8.val;
+          dataView(memory0).setInt8(arg1 + 0, 0, true);
+          var variant6 = e;
+          if (variant6 === null || variant6=== undefined) {
+            dataView(memory0).setInt8(arg1 + 2, 0, true);
+          } else {
+            const e = variant6;
+            dataView(memory0).setInt8(arg1 + 2, 1, true);
+            var variant5 = e;
+            switch (variant5.tag) {
+              case 'ipv4': {
+                const e = variant5.val;
+                dataView(memory0).setInt8(arg1 + 4, 0, true);
+                var [tuple3_0, tuple3_1, tuple3_2, tuple3_3] = e;
+                dataView(memory0).setInt8(arg1 + 6, toUint8(tuple3_0), true);
+                dataView(memory0).setInt8(arg1 + 7, toUint8(tuple3_1), true);
+                dataView(memory0).setInt8(arg1 + 8, toUint8(tuple3_2), true);
+                dataView(memory0).setInt8(arg1 + 9, toUint8(tuple3_3), true);
+                break;
+              }
+              case 'ipv6': {
+                const e = variant5.val;
+                dataView(memory0).setInt8(arg1 + 4, 1, true);
+                var [tuple4_0, tuple4_1, tuple4_2, tuple4_3, tuple4_4, tuple4_5, tuple4_6, tuple4_7] = e;
+                dataView(memory0).setInt16(arg1 + 6, toUint16(tuple4_0), true);
+                dataView(memory0).setInt16(arg1 + 8, toUint16(tuple4_1), true);
+                dataView(memory0).setInt16(arg1 + 10, toUint16(tuple4_2), true);
+                dataView(memory0).setInt16(arg1 + 12, toUint16(tuple4_3), true);
+                dataView(memory0).setInt16(arg1 + 14, toUint16(tuple4_4), true);
+                dataView(memory0).setInt16(arg1 + 16, toUint16(tuple4_5), true);
+                dataView(memory0).setInt16(arg1 + 18, toUint16(tuple4_6), true);
+                dataView(memory0).setInt16(arg1 + 20, toUint16(tuple4_7), true);
+                break;
+              }
+              default: {
+                throw new TypeError(`invalid variant tag value \`${JSON.stringify(variant5.tag)}\` (received \`${variant5}\`) specified for \`IpAddress\``);
+              }
+            }
+          }
+          break;
+        }
+        case 'err': {
+          const e = variant8.val;
+          dataView(memory0).setInt8(arg1 + 0, 1, true);
+          var val7 = e;
+          let enum7;
+          switch (val7) {
+            case 'unknown': {
+              enum7 = 0;
+              break;
+            }
+            case 'access-denied': {
+              enum7 = 1;
+              break;
+            }
+            case 'not-supported': {
+              enum7 = 2;
+              break;
+            }
+            case 'invalid-argument': {
+              enum7 = 3;
+              break;
+            }
+            case 'out-of-memory': {
+              enum7 = 4;
+              break;
+            }
+            case 'timeout': {
+              enum7 = 5;
+              break;
+            }
+            case 'concurrency-conflict': {
+              enum7 = 6;
+              break;
+            }
+            case 'not-in-progress': {
+              enum7 = 7;
+              break;
+            }
+            case 'would-block': {
+              enum7 = 8;
+              break;
+            }
+            case 'invalid-state': {
+              enum7 = 9;
+              break;
+            }
+            case 'new-socket-limit': {
+              enum7 = 10;
+              break;
+            }
+            case 'address-not-bindable': {
+              enum7 = 11;
+              break;
+            }
+            case 'address-in-use': {
+              enum7 = 12;
+              break;
+            }
+            case 'remote-unreachable': {
+              enum7 = 13;
+              break;
+            }
+            case 'connection-refused': {
+              enum7 = 14;
+              break;
+            }
+            case 'connection-reset': {
+              enum7 = 15;
+              break;
+            }
+            case 'connection-aborted': {
+              enum7 = 16;
+              break;
+            }
+            case 'datagram-too-large': {
+              enum7 = 17;
+              break;
+            }
+            case 'name-unresolvable': {
+              enum7 = 18;
+              break;
+            }
+            case 'temporary-resolver-failure': {
+              enum7 = 19;
+              break;
+            }
+            case 'permanent-resolver-failure': {
+              enum7 = 20;
+              break;
+            }
+            default: {
+              if ((e) instanceof Error) {
+                console.error(e);
+              }
+              
+              throw new TypeError(`"${val7}" is not one of the cases of error-code`);
+            }
+          }
+          dataView(memory0).setInt8(arg1 + 2, enum7, true);
+          break;
+        }
+        default: {
+          throw new TypeError('invalid variant specified for result');
+        }
+      }
+    }
+    
+    
+    function trampoline33(arg0, arg1, arg2, arg3) {
+      var handle1 = arg0;
+      var rep2 = handleTable4[(handle1 << 1) + 1] & ~T_FLAG;
+      var rsc0 = captureTable4.get(rep2);
+      if (!rsc0) {
+        rsc0 = Object.create(Network.prototype);
+        Object.defineProperty(rsc0, symbolRscHandle, { writable: true, value: handle1});
+        Object.defineProperty(rsc0, symbolRscRep, { writable: true, value: rep2});
+      }
+      curResourceBorrows.push(rsc0);
+      var ptr3 = arg1;
+      var len3 = arg2;
+      var result3 = utf8Decoder.decode(new Uint8Array(memory0.buffer, ptr3, len3));
+      let ret;
+      try {
+        ret = { tag: 'ok', val: resolveAddresses(rsc0, result3)};
+      } catch (e) {
+        ret = { tag: 'err', val: getErrorPayload(e) };
+      }
+      for (const rsc of curResourceBorrows) {
+        rsc[symbolRscHandle] = undefined;
+      }
+      curResourceBorrows = [];
+      var variant6 = ret;
+      switch (variant6.tag) {
+        case 'ok': {
+          const e = variant6.val;
+          dataView(memory0).setInt8(arg3 + 0, 0, true);
+          if (!(e instanceof ResolveAddressStream)) {
+            throw new TypeError('Resource error: Not a valid "ResolveAddressStream" resource.');
+          }
+          var handle4 = e[symbolRscHandle];
+          if (!handle4) {
+            const rep = e[symbolRscRep] || ++captureCnt5;
+            captureTable5.set(rep, e);
+            handle4 = rscTableCreateOwn(handleTable5, rep);
+          }
+          dataView(memory0).setInt32(arg3 + 4, handle4, true);
+          break;
+        }
+        case 'err': {
+          const e = variant6.val;
+          dataView(memory0).setInt8(arg3 + 0, 1, true);
+          var val5 = e;
+          let enum5;
+          switch (val5) {
+            case 'unknown': {
+              enum5 = 0;
+              break;
+            }
+            case 'access-denied': {
+              enum5 = 1;
+              break;
+            }
+            case 'not-supported': {
+              enum5 = 2;
+              break;
+            }
+            case 'invalid-argument': {
+              enum5 = 3;
+              break;
+            }
+            case 'out-of-memory': {
+              enum5 = 4;
+              break;
+            }
+            case 'timeout': {
+              enum5 = 5;
+              break;
+            }
+            case 'concurrency-conflict': {
+              enum5 = 6;
+              break;
+            }
+            case 'not-in-progress': {
+              enum5 = 7;
+              break;
+            }
+            case 'would-block': {
+              enum5 = 8;
+              break;
+            }
+            case 'invalid-state': {
+              enum5 = 9;
+              break;
+            }
+            case 'new-socket-limit': {
+              enum5 = 10;
+              break;
+            }
+            case 'address-not-bindable': {
+              enum5 = 11;
+              break;
+            }
+            case 'address-in-use': {
+              enum5 = 12;
+              break;
+            }
+            case 'remote-unreachable': {
+              enum5 = 13;
+              break;
+            }
+            case 'connection-refused': {
+              enum5 = 14;
+              break;
+            }
+            case 'connection-reset': {
+              enum5 = 15;
+              break;
+            }
+            case 'connection-aborted': {
+              enum5 = 16;
+              break;
+            }
+            case 'datagram-too-large': {
+              enum5 = 17;
+              break;
+            }
+            case 'name-unresolvable': {
+              enum5 = 18;
+              break;
+            }
+            case 'temporary-resolver-failure': {
+              enum5 = 19;
+              break;
+            }
+            case 'permanent-resolver-failure': {
+              enum5 = 20;
+              break;
+            }
+            default: {
+              if ((e) instanceof Error) {
+                console.error(e);
+              }
+              
+              throw new TypeError(`"${val5}" is not one of the cases of error-code`);
+            }
+          }
+          dataView(memory0).setInt8(arg3 + 4, enum5, true);
+          break;
+        }
+        default: {
+          throw new TypeError('invalid variant specified for result');
+        }
+      }
+    }
+    
     
     function trampoline34(arg0) {
-      const ret = getDirectories();
+      const ret = getEnvironment();
       var vec3 = ret;
       var len3 = vec3.length;
-      var result3 = realloc1(0, 0, 4, len3 * 12);
+      var result3 = realloc1(0, 0, 4, len3 * 16);
       for (let i = 0; i < vec3.length; i++) {
         const e = vec3[i];
-        const base = result3 + i * 12;var [tuple0_0, tuple0_1] = e;
-        if (!(tuple0_0 instanceof Descriptor)) {
-          throw new TypeError('Resource error: Not a valid "Descriptor" resource.');
-        }
-        var handle1 = tuple0_0[symbolRscHandle];
-        if (!handle1) {
-          const rep = tuple0_0[symbolRscRep] || ++captureCnt7;
-          captureTable7.set(rep, tuple0_0);
-          handle1 = rscTableCreateOwn(handleTable7, rep);
-        }
-        dataView(memory0).setInt32(base + 0, handle1, true);
+        const base = result3 + i * 16;var [tuple0_0, tuple0_1] = e;
+        var ptr1 = utf8Encode(tuple0_0, realloc1, memory0);
+        var len1 = utf8EncodedLen;
+        dataView(memory0).setInt32(base + 4, len1, true);
+        dataView(memory0).setInt32(base + 0, ptr1, true);
         var ptr2 = utf8Encode(tuple0_1, realloc1, memory0);
         var len2 = utf8EncodedLen;
-        dataView(memory0).setInt32(base + 8, len2, true);
-        dataView(memory0).setInt32(base + 4, ptr2, true);
+        dataView(memory0).setInt32(base + 12, len2, true);
+        dataView(memory0).setInt32(base + 8, ptr2, true);
       }
       dataView(memory0).setInt32(arg0 + 4, len3, true);
       dataView(memory0).setInt32(arg0 + 0, result3, true);
@@ -1741,6 +1731,10 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
       dataView(memory0).setInt32(arg0 + 8, toUint32(v0_1), true);
     }
     
+    const handleTable7 = [T_FLAG, 0];
+    const captureTable7= new Map();
+    let captureCnt7 = 0;
+    handleTables[7] = handleTable7;
     
     function trampoline36(arg0, arg1, arg2) {
       var handle1 = arg0;
@@ -3381,21 +3375,27 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
     
     
     function trampoline48(arg0) {
-      const ret = getEnvironment();
+      const ret = getDirectories();
       var vec3 = ret;
       var len3 = vec3.length;
-      var result3 = realloc1(0, 0, 4, len3 * 16);
+      var result3 = realloc1(0, 0, 4, len3 * 12);
       for (let i = 0; i < vec3.length; i++) {
         const e = vec3[i];
-        const base = result3 + i * 16;var [tuple0_0, tuple0_1] = e;
-        var ptr1 = utf8Encode(tuple0_0, realloc1, memory0);
-        var len1 = utf8EncodedLen;
-        dataView(memory0).setInt32(base + 4, len1, true);
-        dataView(memory0).setInt32(base + 0, ptr1, true);
+        const base = result3 + i * 12;var [tuple0_0, tuple0_1] = e;
+        if (!(tuple0_0 instanceof Descriptor)) {
+          throw new TypeError('Resource error: Not a valid "Descriptor" resource.');
+        }
+        var handle1 = tuple0_0[symbolRscHandle];
+        if (!handle1) {
+          const rep = tuple0_0[symbolRscRep] || ++captureCnt7;
+          captureTable7.set(rep, tuple0_0);
+          handle1 = rscTableCreateOwn(handleTable7, rep);
+        }
+        dataView(memory0).setInt32(base + 0, handle1, true);
         var ptr2 = utf8Encode(tuple0_1, realloc1, memory0);
         var len2 = utf8EncodedLen;
-        dataView(memory0).setInt32(base + 12, len2, true);
-        dataView(memory0).setInt32(base + 8, ptr2, true);
+        dataView(memory0).setInt32(base + 8, len2, true);
+        dataView(memory0).setInt32(base + 4, ptr2, true);
       }
       dataView(memory0).setInt32(arg0 + 4, len3, true);
       dataView(memory0).setInt32(arg0 + 0, result3, true);
@@ -3409,35 +3409,7 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
     let postReturn4;
     let postReturn5;
     let postReturn6;
-    const handleTable8 = [T_FLAG, 0];
-    const finalizationRegistry8 = finalizationRegistryCreate((handle) => {
-      const { rep } = rscTableRemove(handleTable8, handle);
-      exports0['33'](rep);
-    });
-    
-    handleTables[8] = handleTable8;
-    const trampoline0 = rscTableCreateOwn.bind(null, handleTable8);
-    function trampoline1(handle) {
-      const handleEntry = rscTableRemove(handleTable8, handle);
-      if (handleEntry.own) {
-        
-        exports0['33'](handleEntry.rep);
-      }
-    }
-    function trampoline2(handle) {
-      const handleEntry = rscTableRemove(handleTable5, handle);
-      if (handleEntry.own) {
-        
-        const rsc = captureTable5.get(handleEntry.rep);
-        if (rsc) {
-          if (rsc[symbolDispose]) rsc[symbolDispose]();
-          captureTable5.delete(handleEntry.rep);
-        } else if (ResolveAddressStream[symbolCabiDispose]) {
-          ResolveAddressStream[symbolCabiDispose](handleEntry.rep);
-        }
-      }
-    }
-    function trampoline3(handle) {
+    function trampoline0(handle) {
       const handleEntry = rscTableRemove(handleTable1, handle);
       if (handleEntry.own) {
         
@@ -3450,46 +3422,7 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
         }
       }
     }
-    function trampoline4(handle) {
-      const handleEntry = rscTableRemove(handleTable4, handle);
-      if (handleEntry.own) {
-        
-        const rsc = captureTable4.get(handleEntry.rep);
-        if (rsc) {
-          if (rsc[symbolDispose]) rsc[symbolDispose]();
-          captureTable4.delete(handleEntry.rep);
-        } else if (Network[symbolCabiDispose]) {
-          Network[symbolCabiDispose](handleEntry.rep);
-        }
-      }
-    }
-    function trampoline5(handle) {
-      const handleEntry = rscTableRemove(handleTable3, handle);
-      if (handleEntry.own) {
-        
-        const rsc = captureTable3.get(handleEntry.rep);
-        if (rsc) {
-          if (rsc[symbolDispose]) rsc[symbolDispose]();
-          captureTable3.delete(handleEntry.rep);
-        } else if (OutputStream[symbolCabiDispose]) {
-          OutputStream[symbolCabiDispose](handleEntry.rep);
-        }
-      }
-    }
-    function trampoline6(handle) {
-      const handleEntry = rscTableRemove(handleTable2, handle);
-      if (handleEntry.own) {
-        
-        const rsc = captureTable2.get(handleEntry.rep);
-        if (rsc) {
-          if (rsc[symbolDispose]) rsc[symbolDispose]();
-          captureTable2.delete(handleEntry.rep);
-        } else if (InputStream[symbolCabiDispose]) {
-          InputStream[symbolCabiDispose](handleEntry.rep);
-        }
-      }
-    }
-    function trampoline7(handle) {
+    function trampoline1(handle) {
       const handleEntry = rscTableRemove(handleTable6, handle);
       if (handleEntry.own) {
         
@@ -3502,20 +3435,7 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
         }
       }
     }
-    function trampoline10(handle) {
-      const handleEntry = rscTableRemove(handleTable1, handle);
-      if (handleEntry.own) {
-        
-        const rsc = captureTable1.get(handleEntry.rep);
-        if (rsc) {
-          if (rsc[symbolDispose]) rsc[symbolDispose]();
-          captureTable1.delete(handleEntry.rep);
-        } else if (Error$1[symbolCabiDispose]) {
-          Error$1[symbolCabiDispose](handleEntry.rep);
-        }
-      }
-    }
-    function trampoline11(handle) {
+    function trampoline2(handle) {
       const handleEntry = rscTableRemove(handleTable2, handle);
       if (handleEntry.own) {
         
@@ -3528,7 +3448,7 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
         }
       }
     }
-    function trampoline12(handle) {
+    function trampoline3(handle) {
       const handleEntry = rscTableRemove(handleTable3, handle);
       if (handleEntry.own) {
         
@@ -3541,7 +3461,48 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
         }
       }
     }
-    function trampoline13(handle) {
+    const handleTable8 = [T_FLAG, 0];
+    const finalizationRegistry8 = finalizationRegistryCreate((handle) => {
+      const { rep } = rscTableRemove(handleTable8, handle);
+      exports0['33'](rep);
+    });
+    
+    handleTables[8] = handleTable8;
+    const trampoline4 = rscTableCreateOwn.bind(null, handleTable8);
+    function trampoline6(handle) {
+      const handleEntry = rscTableRemove(handleTable4, handle);
+      if (handleEntry.own) {
+        
+        const rsc = captureTable4.get(handleEntry.rep);
+        if (rsc) {
+          if (rsc[symbolDispose]) rsc[symbolDispose]();
+          captureTable4.delete(handleEntry.rep);
+        } else if (Network[symbolCabiDispose]) {
+          Network[symbolCabiDispose](handleEntry.rep);
+        }
+      }
+    }
+    function trampoline7(handle) {
+      const handleEntry = rscTableRemove(handleTable8, handle);
+      if (handleEntry.own) {
+        
+        exports0['33'](handleEntry.rep);
+      }
+    }
+    function trampoline8(handle) {
+      const handleEntry = rscTableRemove(handleTable5, handle);
+      if (handleEntry.own) {
+        
+        const rsc = captureTable5.get(handleEntry.rep);
+        if (rsc) {
+          if (rsc[symbolDispose]) rsc[symbolDispose]();
+          captureTable5.delete(handleEntry.rep);
+        } else if (ResolveAddressStream[symbolCabiDispose]) {
+          ResolveAddressStream[symbolCabiDispose](handleEntry.rep);
+        }
+      }
+    }
+    function trampoline10(handle) {
       const handleEntry = rscTableRemove(handleTable7, handle);
       if (handleEntry.own) {
         
@@ -3551,6 +3512,45 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
           captureTable7.delete(handleEntry.rep);
         } else if (Descriptor[symbolCabiDispose]) {
           Descriptor[symbolCabiDispose](handleEntry.rep);
+        }
+      }
+    }
+    function trampoline11(handle) {
+      const handleEntry = rscTableRemove(handleTable3, handle);
+      if (handleEntry.own) {
+        
+        const rsc = captureTable3.get(handleEntry.rep);
+        if (rsc) {
+          if (rsc[symbolDispose]) rsc[symbolDispose]();
+          captureTable3.delete(handleEntry.rep);
+        } else if (OutputStream[symbolCabiDispose]) {
+          OutputStream[symbolCabiDispose](handleEntry.rep);
+        }
+      }
+    }
+    function trampoline12(handle) {
+      const handleEntry = rscTableRemove(handleTable1, handle);
+      if (handleEntry.own) {
+        
+        const rsc = captureTable1.get(handleEntry.rep);
+        if (rsc) {
+          if (rsc[symbolDispose]) rsc[symbolDispose]();
+          captureTable1.delete(handleEntry.rep);
+        } else if (Error$1[symbolCabiDispose]) {
+          Error$1[symbolCabiDispose](handleEntry.rep);
+        }
+      }
+    }
+    function trampoline13(handle) {
+      const handleEntry = rscTableRemove(handleTable2, handle);
+      if (handleEntry.own) {
+        
+        const rsc = captureTable2.get(handleEntry.rep);
+        if (rsc) {
+          if (rsc[symbolDispose]) rsc[symbolDispose]();
+          captureTable2.delete(handleEntry.rep);
+        } else if (InputStream[symbolCabiDispose]) {
+          InputStream[symbolCabiDispose](handleEntry.rep);
         }
       }
     }
@@ -3571,40 +3571,40 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
     ({ exports: exports0 } = yield instantiateCore(yield module2));
     ({ exports: exports1 } = yield instantiateCore(yield module0, {
       '[export]component:nfs-rs/nfs': {
-        '[resource-drop]nfs-mount': trampoline1,
-        '[resource-new]nfs-mount': trampoline0,
+        '[resource-drop]nfs-mount': trampoline7,
+        '[resource-new]nfs-mount': trampoline4,
       },
       'wasi:io/error@0.2.0': {
-        '[method]error.to-debug-string': exports0['6'],
-        '[resource-drop]error': trampoline3,
+        '[method]error.to-debug-string': exports0['0'],
+        '[resource-drop]error': trampoline0,
       },
       'wasi:io/streams@0.2.0': {
-        '[method]input-stream.blocking-read': exports0['7'],
-        '[method]output-stream.blocking-write-and-flush': exports0['9'],
-        '[method]output-stream.check-write': exports0['8'],
-        '[resource-drop]input-stream': trampoline6,
-        '[resource-drop]output-stream': trampoline5,
+        '[method]input-stream.blocking-read': exports0['1'],
+        '[method]output-stream.blocking-write-and-flush': exports0['3'],
+        '[method]output-stream.check-write': exports0['2'],
+        '[resource-drop]input-stream': trampoline2,
+        '[resource-drop]output-stream': trampoline3,
       },
       'wasi:sockets/instance-network@0.2.0': {
-        'instance-network': trampoline8,
+        'instance-network': trampoline5,
       },
       'wasi:sockets/ip-name-lookup@0.2.0': {
-        '[method]resolve-address-stream.resolve-next-address': exports0['0'],
-        '[resource-drop]resolve-address-stream': trampoline2,
-        'resolve-addresses': exports0['1'],
+        '[method]resolve-address-stream.resolve-next-address': exports0['9'],
+        '[resource-drop]resolve-address-stream': trampoline8,
+        'resolve-addresses': exports0['10'],
       },
       'wasi:sockets/network@0.2.0': {
-        '[resource-drop]network': trampoline4,
+        '[resource-drop]network': trampoline6,
       },
       'wasi:sockets/tcp-create-socket@0.2.0': {
-        'create-tcp-socket': exports0['10'],
+        'create-tcp-socket': exports0['8'],
       },
       'wasi:sockets/tcp@0.2.0': {
-        '[method]tcp-socket.finish-connect': exports0['3'],
-        '[method]tcp-socket.remote-address': exports0['4'],
-        '[method]tcp-socket.shutdown': exports0['5'],
-        '[method]tcp-socket.start-connect': exports0['2'],
-        '[resource-drop]tcp-socket': trampoline7,
+        '[method]tcp-socket.finish-connect': exports0['5'],
+        '[method]tcp-socket.remote-address': exports0['6'],
+        '[method]tcp-socket.shutdown': exports0['7'],
+        '[method]tcp-socket.start-connect': exports0['4'],
+        '[resource-drop]tcp-socket': trampoline1,
       },
       wasi_snapshot_preview1: {
         clock_time_get: exports0['27'],
@@ -3624,30 +3624,30 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
         memory: exports1.memory,
       },
       'wasi:cli/environment@0.2.0': {
-        'get-environment': exports0['25'],
+        'get-environment': exports0['11'],
       },
       'wasi:cli/exit@0.2.0': {
-        exit: trampoline20,
+        exit: trampoline22,
       },
       'wasi:cli/stderr@0.2.0': {
         'get-stderr': trampoline19,
       },
       'wasi:cli/stdin@0.2.0': {
-        'get-stdin': trampoline21,
+        'get-stdin': trampoline20,
       },
       'wasi:cli/stdout@0.2.0': {
-        'get-stdout': trampoline22,
+        'get-stdout': trampoline21,
       },
       'wasi:clocks/monotonic-clock@0.2.0': {
         now: trampoline9,
-        'subscribe-duration': trampoline14,
-        'subscribe-instant': trampoline15,
+        'subscribe-duration': trampoline16,
+        'subscribe-instant': trampoline17,
       },
       'wasi:clocks/wall-clock@0.2.0': {
         now: exports0['12'],
       },
       'wasi:filesystem/preopens@0.2.0': {
-        'get-directories': exports0['11'],
+        'get-directories': exports0['25'],
       },
       'wasi:filesystem/types@0.2.0': {
         '[method]descriptor.append-via-stream': exports0['15'],
@@ -3655,25 +3655,25 @@ export function instantiate(getCoreModule, imports, instantiateCore = WebAssembl
         '[method]descriptor.read-via-stream': exports0['13'],
         '[method]descriptor.stat': exports0['17'],
         '[method]descriptor.write-via-stream': exports0['14'],
-        '[resource-drop]descriptor': trampoline13,
+        '[resource-drop]descriptor': trampoline10,
         'filesystem-error-code': exports0['18'],
       },
       'wasi:io/error@0.2.0': {
-        '[resource-drop]error': trampoline10,
+        '[resource-drop]error': trampoline12,
       },
       'wasi:io/poll@0.2.0': {
         '[resource-drop]pollable': trampoline18,
         poll: exports0['23'],
       },
       'wasi:io/streams@0.2.0': {
-        '[method]input-stream.subscribe': trampoline17,
+        '[method]input-stream.subscribe': trampoline14,
         '[method]output-stream.blocking-flush': exports0['22'],
         '[method]output-stream.blocking-write-and-flush': exports0['21'],
         '[method]output-stream.check-write': exports0['19'],
-        '[method]output-stream.subscribe': trampoline16,
+        '[method]output-stream.subscribe': trampoline15,
         '[method]output-stream.write': exports0['20'],
-        '[resource-drop]input-stream': trampoline11,
-        '[resource-drop]output-stream': trampoline12,
+        '[resource-drop]input-stream': trampoline13,
+        '[resource-drop]output-stream': trampoline11,
       },
       'wasi:random/random@0.2.0': {
         'get-random-bytes': exports0['24'],

@@ -24,9 +24,9 @@ import { nfs } from "../component";
 // Needed specifically for bun:
 import { test, describe, beforeAll, beforeEach, expect, afterAll } from "vitest";
 
-const testNonWrappedURL =
+const testNonWrappedURL = process?.env?.TEST_NON_WRAPPED_URL ||
     "nfs://localhost/tmp/nfs-js-test-non-wrapped?uid=502&gid=20&nfsport=20990&mountport=20990&auto-traverse-mounts=0";
-const testWrappedURL =
+const testWrappedURL = process?.env?.TEST_WRAPPED_URL ||
     "nfs://localhost/tmp/nfs-js-test-wrapped?uid=502&gid=20&nfsport=20940&mountport=20940&auto-traverse-mounts=0";
 
 const getNfsRoot = async () => {

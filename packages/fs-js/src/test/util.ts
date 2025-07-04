@@ -25,6 +25,11 @@ export async function cleanupSandboxedFileSystem(root: FileSystemDirectoryHandle
     }
 }
 
+export async function assertFileSize(handle: FileSystemFileHandle, expectedFileSize: number) {
+    const fileSize = await getFileSize(handle);
+    assert(fileSize === expectedFileSize, `file size ${fileSize} does not match expected ${expectedFileSize} for file ${handle.name}`);
+}
+
 export async function getFileSize(handle: FileSystemFileHandle) {
     const file = await handle.getFile();
     return file.size;
@@ -47,7 +52,7 @@ export async function getDirectoryEntryCount(handle: FileSystemDirectoryHandle) 
 export async function createEmptyFile(name: string, parent: FileSystemDirectoryHandle) {
     const handle = await parent.getFileHandle(name, { create: true });
     // Make sure the file is empty.
-    assert((await getFileSize(handle)) === 0);
+    await assertFileSize(handle, 0);
     return handle;
 }
 
@@ -56,6 +61,8 @@ export async function createFileWithContents(fileName: string, contents: string,
     const writeable = await handle.createWritable();
     await writeable.write(contents);
     await writeable.close();
+    // Make sure the file was written successfully
+    await assertFileSize(handle, contents.length);
     return handle;
 }
 

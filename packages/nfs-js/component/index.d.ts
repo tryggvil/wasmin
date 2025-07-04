@@ -1,4 +1,4 @@
-import { NfsMount, ReaddirplusEntry, ObjRes } from "./interfaces/component-nfs-rs-nfs";
+import { NfsMount, ReaddirplusEntry, ObjRes, Attr } from "./interfaces/component-nfs-rs-nfs";
 import { Stat, FileSystemWritableFileStream, FileSystemCreateWritableOptions, FileSystemSyncAccessHandle, FileSystemWriteChunkType } from "@netapplabs/fs-js";
 declare global {
     var NFS_JS_DEBUG: boolean;
@@ -85,7 +85,7 @@ export declare class NfsFile implements File {
     webkitRelativePath: string;
     size: number;
     type: string;
-    constructor(mount: NfsMount, fh: Uint8Array, name: string);
+    constructor(mount: NfsMount, fh: Uint8Array, name: string, attr?: Attr);
     private uint8Array;
     arrayBuffer(): Promise<ArrayBuffer>;
     slice(start?: number | undefined, end?: number | undefined, contentType?: string | undefined): Blob;

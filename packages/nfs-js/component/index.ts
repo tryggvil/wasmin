@@ -1,4 +1,4 @@
-import { NfsMount, ReaddirplusEntry, ObjRes } from "./interfaces/component-nfs-rs-nfs";
+import { NfsMount, ReaddirplusEntry, ObjRes, Attr } from "./interfaces/component-nfs-rs-nfs";
 import { instantiate } from "./nfs_rs.js";
 import { WasiCapabilities, WASIWorker } from "@netapplabs/wasi-js";
 import {
@@ -739,7 +739,9 @@ export class NfsFileHandle extends NfsHandle implements FileSystemFileHandle {
     async getFile(): Promise<File> {
         return new Promise((resolve, reject) => {
             try {
-                const file = new NfsFile(this._mount, this._fh, this.name) as unknown;
+                const res = this._mount.lookup(this._fhDir, this.name);
+                this._fh = res.obj;
+                const file = new NfsFile(this._mount, this._fh, this.name, res.attr) as unknown;
                 return resolve(file as File);
             } catch (e: any) {
                 if (e.payload?.nfsErrorCode === NFS3ERR_NOENT || e.payload?.nfsErrorCode === NFS3ERR_STALE) {
@@ -779,8 +781,10 @@ export class NfsFile implements File {
     webkitRelativePath: string;
     size: number;
     type: string;
-    constructor(mount: NfsMount, fh: Uint8Array, name: string) {
-        const attr = mount.getattr(fh);
+    constructor(mount: NfsMount, fh: Uint8Array, name: string, attr?: Attr) {
+        if (!attr) {
+            attr = mount.getattr(fh);
+        }
 
         this.prototype = new File([], name);
         this._mount = mount;

@@ -1,6 +1,6 @@
 import {
     streamFromFetch,
-    getFileSize,
+    assertFileSize,
     getFileContents,
     getDirectoryEntryCount,
     getSortedDirectoryEntries,
@@ -209,8 +209,8 @@ export const TestsFileSystemHandleImportTestDefinitions = (
             });
             expect(handle.kind).toBe("file");
             expect(handle.name).toBe("non-existing-file");
-            expect(await getFileSize(handle)).toBe(0);
             expect(await getFileContents(handle)).toBe("");
+            await assertFileSize(handle, 0);
         });
 
         test("getFileHandle(create=false) returns existing files", async () => {
@@ -218,8 +218,8 @@ export const TestsFileSystemHandleImportTestDefinitions = (
             const handle = await root.getFileHandle("existing-file");
             expect(handle.kind).toBe("file");
             expect(handle.name).toBe("existing-file");
-            expect(await getFileSize(handle)).toBe(10);
             expect(await getFileContents(handle)).toBe("1234567890");
+            await assertFileSize(handle, 10);
         });
 
         test("getFileHandle(create=true) returns existing files without erasing", async () => {
@@ -229,8 +229,8 @@ export const TestsFileSystemHandleImportTestDefinitions = (
             });
             expect(handle.kind).toBe("file");
             expect(handle.name).toBe("file-with-contents");
-            expect(await getFileSize(handle)).toBe(10);
             expect(await getFileContents(handle)).toBe("1234567890");
+            await assertFileSize(handle, 10);
         });
 
         test("getFileHandle(create=false) when a directory already exists with the same name", async () => {
@@ -368,6 +368,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
             const fileContents = "awesome content";
             const handle = await createFileWithContents("awesome.txt", fileContents, root);
             const file = await handle.getFile();
+            expect(file.size).toBe(fileContents.length);
             const slice = file.slice(1, file.size);
             const actualContents = await slice.text();
             expect(actualContents).toEqual(fileContents.slice(1, fileContents.length));
@@ -378,6 +379,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
             const fileContents = "awesome content";
             const handle = await createFileWithContents("awesome.txt", fileContents, root);
             const file = await handle.getFile();
+            expect(file.size).toBe(fileContents.length);
             const slice = file.slice(1, file.size-1);
             const actualContents = await slice.text();
             expect(actualContents).toEqual(fileContents.slice(1, fileContents.length-1));
@@ -387,6 +389,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
             const fileContents = "average content";
             const handle = await createFileWithContents("average.txt", fileContents, root);
             const file = await handle.getFile();
+            expect(file.size).toBe(fileContents.length);
             const actualContents = await file.arrayBuffer();
             const expectedContents = new TextEncoder().encode(fileContents);
             expect(actualContents).toEqual(expectedContents.buffer);
@@ -396,6 +399,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
             const fileContents = "superb content";
             const handle = await createFileWithContents("superb.txt", fileContents, root);
             const file = await handle.getFile();
+            expect(file.size).toBe(fileContents.length);
             const stream = file.stream();
             const reader = stream.getReader();
             const actualContents = new Uint8Array(file.size);
@@ -415,6 +419,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
             const fileContents = "abysmal content";
             const handle = await createFileWithContents("abysmal.txt", fileContents, root);
             const file = await handle.getFile();
+            expect(file.size).toBe(fileContents.length);
             const actualContents = await file.text();
             expect(actualContents).toEqual(fileContents);
         });
@@ -428,6 +433,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
             await wfs.close();
             const second_mtime = (await handle.getFile()).lastModified;
             const fileReplica = await handle.getFile();
+            expect(fileReplica.size).toBe(3);
             expect(second_mtime).toEqual(fileReplica.lastModified);
             expect(first_mtime < second_mtime);
         });
@@ -445,7 +451,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
 
         await rs.pipeTo(wfs as unknown as WritableStream, { preventCancel: true });
         expect(await getFileContents(handle)).toBe("foo_string");
-        expect(await getFileSize(handle)).toBe(10);
+        await assertFileSize(handle, 10);
     });
 
     test("can be piped to with an ArrayBuffer", async () => {
@@ -459,7 +465,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         });
         await rs.pipeTo(wfs as unknown as WritableStream, { preventCancel: true });
         expect(await getFileContents(handle)).toBe("foo");
-        expect(await getFileSize(handle)).toBe(3);
+        await assertFileSize(handle, 3);
     });
 
     test("can be piped to with a Blob", async () => {
@@ -473,7 +479,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         });
         await rs.pipeTo(wfs as unknown as WritableStream, { preventCancel: true });
         expect(await getFileContents(handle)).toBe("foo");
-        expect(await getFileSize(handle)).toBe(3);
+        await assertFileSize(handle, 3);
     });
 
     test("can be piped to with a param object with write command", async () => {
@@ -487,7 +493,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         });
         await rs.pipeTo(wfs as unknown as WritableStream, { preventCancel: true });
         expect(await getFileContents(handle)).toBe("foobar");
-        expect(await getFileSize(handle)).toBe(6);
+        await assertFileSize(handle, 6);
     });
 
     test("can be piped to with a param object with multiple commands", async () => {
@@ -503,7 +509,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         });
         await rs.pipeTo(wfs as unknown as WritableStream);
         expect(await getFileContents(handle)).toBe("bazbar\0\0\0\0");
-        expect(await getFileSize(handle)).toBe(10);
+        await assertFileSize(handle, 10);
     });
 
     test("multiple operations can be queued", async () => {
@@ -519,7 +525,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         });
         await rs.pipeTo(wfs as unknown as WritableStream, { preventCancel: true });
         expect(await getFileContents(handle)).toBe("foobarbaz");
-        expect(await getFileSize(handle)).toBe(9);
+        await assertFileSize(handle, 9);
     });
 
     test("plays well with fetch", async () => {
@@ -528,7 +534,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         const body = streamFromFetch("fetched from far");
         await body.pipeTo(wfs as unknown as WritableStream, { preventCancel: true });
         expect(await getFileContents(handle)).toBe("fetched from far");
-        expect(await getFileSize(handle)).toBe(16);
+        await assertFileSize(handle, 16);
     });
 
     test("abort() aborts write", async () => {
@@ -556,7 +562,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         err = await capture(wfs.close());
         expect(err).toBeInstanceOf(TypeError);
         expect(await getFileContents(handle)).toBe("");
-        expect(await getFileSize(handle)).toBe(0);
+        await assertFileSize(handle, 0);
     });
 
     test("write() with an empty blob to an empty file", async () => {
@@ -565,7 +571,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write(new Blob([]));
         await wfs.close();
         expect(await getFileContents(handle)).toBe("");
-        expect(await getFileSize(handle)).toBe(0);
+        await assertFileSize(handle, 0);
     });
 
     test("write() a blob to an empty file", async () => {
@@ -574,7 +580,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write(new Blob(["1234567890"]));
         await wfs.close();
         expect(await getFileContents(handle)).toBe("1234567890");
-        expect(await getFileSize(handle)).toBe(10);
+        await assertFileSize(handle, 10);
     });
 
     test("write() with WriteParams without position to an empty file", async () => {
@@ -583,7 +589,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write({ type: "write", data: "1234567890" });
         await wfs.close();
         expect(await getFileContents(handle)).toBe("1234567890");
-        expect(await getFileSize(handle)).toBe(10);
+        await assertFileSize(handle, 10);
     });
 
     test("write() a string to an empty file with zero offset", async () => {
@@ -592,7 +598,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write({ type: "write", position: 0, data: "1234567890" });
         await wfs.close();
         expect(await getFileContents(handle)).toBe("1234567890");
-        expect(await getFileSize(handle)).toBe(10);
+        await assertFileSize(handle, 10);
     });
 
     test("write() a blob to an empty file with zero offset", async () => {
@@ -605,7 +611,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         });
         await wfs.close();
         expect(await getFileContents(handle)).toBe("1234567890");
-        expect(await getFileSize(handle)).toBe(10);
+        await assertFileSize(handle, 10);
     });
 
     test("write() called consecutively appends", async () => {
@@ -615,7 +621,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write("67890");
         await wfs.close();
         expect(await getFileContents(handle)).toBe("1234567890");
-        expect(await getFileSize(handle)).toBe(10);
+        await assertFileSize(handle, 10);
     });
 
     test("write() WriteParams without position and string appends", async () => {
@@ -625,7 +631,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write({ type: "write", data: "67890" });
         await wfs.close();
         expect(await getFileContents(handle)).toBe("1234567890");
-        expect(await getFileSize(handle)).toBe(10);
+        await assertFileSize(handle, 10);
     });
 
     test("write() WriteParams without position and blob appends", async () => {
@@ -635,7 +641,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write({ type: "write", data: new Blob(["67890"]) });
         await wfs.close();
         expect(await getFileContents(handle)).toBe("1234567890");
-        expect(await getFileSize(handle)).toBe(10);
+        await assertFileSize(handle, 10);
     });
 
     test("write() called with a string and a valid offset", async () => {
@@ -645,7 +651,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write({ type: "write", position: 4, data: "abc" });
         await wfs.close();
         expect(await getFileContents(handle)).toBe("1234abc890");
-        expect(await getFileSize(handle)).toBe(10);
+        await assertFileSize(handle, 10);
     });
 
     test("write() called with a blob and a valid offset", async () => {
@@ -655,7 +661,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write({ type: "write", position: 4, data: new Blob(["abc"]) });
         await wfs.close();
         expect(await getFileContents(handle)).toBe("1234abc890");
-        expect(await getFileSize(handle)).toBe(10);
+        await assertFileSize(handle, 10);
     });
 
     test("write() called with an larger offset than size", async () => {
@@ -664,7 +670,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write({ type: "write", position: 4, data: new Blob(["abc"]) });
         await wfs.close();
         expect(await getFileContents(handle)).toBe("\0\0\0\0abc");
-        expect(await getFileSize(handle)).toBe(7);
+        await assertFileSize(handle, 7);
     });
 
     test("write() with an empty string to an empty file", async () => {
@@ -673,7 +679,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write("");
         await wfs.close();
         expect(await getFileContents(handle)).toBe("");
-        expect(await getFileSize(handle)).toBe(0);
+        await assertFileSize(handle, 0);
     });
 
     test("write() with a valid utf-8 string", async () => {
@@ -682,7 +688,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write("foo🤘");
         await wfs.close();
         expect(await getFileContents(handle)).toBe("foo🤘");
-        expect(await getFileSize(handle)).toBe(7);
+        await assertFileSize(handle, 7);
     });
 
     test("write() with a string with unix line ending preserved", async () => {
@@ -691,7 +697,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write("foo\n");
         await wfs.close();
         expect(await getFileContents(handle)).toBe("foo\n");
-        expect(await getFileSize(handle)).toBe(4);
+        await assertFileSize(handle, 4);
     });
 
     test("write() with a string with windows line ending preserved", async () => {
@@ -700,7 +706,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write("foo\r\n");
         await wfs.close();
         expect(await getFileContents(handle)).toBe("foo\r\n");
-        expect(await getFileSize(handle)).toBe(5);
+        await assertFileSize(handle, 5);
     });
 
     test("write() with an empty array buffer to an empty file", async () => {
@@ -709,7 +715,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write(new ArrayBuffer(0));
         await wfs.close();
         expect(await getFileContents(handle)).toBe("");
-        expect(await getFileSize(handle)).toBe(0);
+        await assertFileSize(handle, 0);
     });
 
     test("write() with a valid typed array buffer", async () => {
@@ -719,7 +725,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write(buf);
         await wfs.close();
         expect(await getFileContents(handle)).toBe("foo");
-        expect(await getFileSize(handle)).toBe(3);
+        await assertFileSize(handle, 3);
     });
 
     testOnlyMemory(name)("atomic writes: close() fails when parent directory is removed", async () => {
@@ -742,13 +748,13 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write("foox");
         const wfs2 = await handle.createWritable();
         await wfs2.write("bar");
-        expect(await getFileSize(handle)).toBe(0);
+        await assertFileSize(handle, 0);
         await wfs2.close();
         expect(await getFileContents(handle)).toBe("bar");
-        expect(await getFileSize(handle)).toBe(3);
+        await assertFileSize(handle, 3);
         await wfs.close();
         expect(await getFileContents(handle)).toBe("foox");
-        expect(await getFileSize(handle)).toBe(4);
+        await assertFileSize(handle, 4);
     });
 
     /*
@@ -772,7 +778,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write("foo");
         await wfs.close();
         expect(await getFileContents(handle)).toBe("foo");
-        expect(await getFileSize(handle)).toBe(3);
+        await assertFileSize(handle, 3);
         const err = await capture(wfs.write("abc"));
         expect(err).toBeInstanceOf(TypeError);
     });
@@ -783,7 +789,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write("foo");
         await wfs.close();
         expect(await getFileContents(handle)).toBe("foo");
-        expect(await getFileSize(handle)).toBe(3);
+        await assertFileSize(handle, 3);
         const err = await capture(wfs.truncate(0));
         expect(err).toBeInstanceOf(TypeError);
     });
@@ -794,7 +800,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write("foo");
         await wfs.close();
         expect(await getFileContents(handle)).toBe("foo");
-        expect(await getFileSize(handle)).toBe(3);
+        await assertFileSize(handle, 3);
         const err = await capture(wfs.close());
         expect(err).toBeInstanceOf(TypeError);
     });
@@ -826,7 +832,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await writer.write({ type: "write", data: "baz" });
         await writer.close();
         expect(await getFileContents(handle)).toBe("bazbar");
-        expect(await getFileSize(handle)).toBe(6);
+        await assertFileSize(handle, 6);
     });
 
     test("writing small bits advances the position", async () => {
@@ -841,7 +847,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await writer.write({ type: "write", data: "z" });
         await writer.close();
         expect(await getFileContents(handle)).toBe("bazbar");
-        expect(await getFileSize(handle)).toBe(6);
+        await assertFileSize(handle, 6);
     });
 
     test("WriteParams: truncate missing size param", async () => {
@@ -875,7 +881,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.truncate(5);
         await wfs.close();
         expect(await getFileContents(handle)).toBe("12345");
-        expect(await getFileSize(handle)).toBe(5);
+        await assertFileSize(handle, 5);
     });
 
     test("truncate() to grow a file", async () => {
@@ -885,7 +891,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.truncate(5);
         await wfs.close();
         expect(await getFileContents(handle)).toBe("abc\0\0");
-        expect(await getFileSize(handle)).toBe(5);
+        await assertFileSize(handle, 5);
     });
 
     test("createWritable() fails when parent directory is removed", async () => {
@@ -925,7 +931,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write("bar");
         await wfs.close();
         expect(await getFileContents(handle)).toBe("barks");
-        expect(await getFileSize(handle)).toBe(5);
+        await assertFileSize(handle, 5);
     });
 
     test("createWritable({keepExistingData: false}): non-atomic writable file stream initialized with empty file", async () => {
@@ -935,7 +941,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write("bar");
         await wfs.close();
         expect(await getFileContents(handle)).toBe("bar");
-        expect(await getFileSize(handle)).toBe(3);
+        await assertFileSize(handle, 3);
     });
 
     testOnlyMemory(name)(
@@ -948,7 +954,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
             expect(await getFileContents(handle)).toBe("very long string");
             await wfs.close();
             expect(await getFileContents(handle)).toBe("bar");
-            expect(await getFileSize(handle)).toBe(3);
+            await assertFileSize(handle, 3);
         }
     );
 
@@ -960,7 +966,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.close();
 
         expect(await getFileContents(handle)).toBe("abc45");
-        expect(await getFileSize(handle)).toBe(5);
+        await assertFileSize(handle, 5);
     });
 
     test("cursor position: truncate size < offset", async () => {
@@ -971,7 +977,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write("abc");
         await wfs.close();
         expect(await getFileContents(handle)).toBe("12345abc");
-        expect(await getFileSize(handle)).toBe(8);
+        await assertFileSize(handle, 8);
     });
 
     test("commands are queued", async () => {
@@ -984,7 +990,7 @@ export const TestsFileSystemHandleImportTestDefinitions = (
         await wfs.write("xyz");
         await wfs.close();
         expect(await getFileContents(handle)).toBe("xyzdef\0\0\0");
-        expect(await getFileSize(handle)).toBe(9);
+        await assertFileSize(handle, 9);
     });
 
     test("queryPermission(writable=false) returns granted", async () => {
