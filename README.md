@@ -143,6 +143,19 @@ Clone from github:
 git clone git@github.com:NetAppLabs/wasmin.git
 ```
 
+Export a `GITHUB_TOKEN` to your environment with `read:packages` scope.
+```shell
+export GITHUB_TOKEN=your_github_token
+```
+
+Set up a modern Yarn environment depending on your JS runtime of choice:
+
+- Node.js > 16.10:
+    ```shell
+    corepack enable
+    ```
+- Other JS runtimes: you may need to install corepack manually using your runtime and package manager of choice.
+
 ### Build
 
 To build all apps and packages, run the following command:
