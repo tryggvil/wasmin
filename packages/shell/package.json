@@ -44,6 +44,7 @@
     "@netapplabs/nfs-js": "^0.7.1",
     "@netapplabs/node-fs-js": "^0.7.0",
     "@netapplabs/s3-fs-js": "^0.7.0",
+    "@netapplabs/smb-js-napi": "^0.8.1",
     "@netapplabs/wasi-js": "^0.7.0",
     "chalk": "^5.4.1"
   }

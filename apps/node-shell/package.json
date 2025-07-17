@@ -8,7 +8,9 @@
     "build-vite": "vite build --sourcemap && yarn tsc",
     "start": "node --enable-source-maps dist/node-shell.umd.js",
     "build-esbuild2": "esbuild --bundle src/index.ts --sourcemap --platform=node --outfile=dist/index.js --format=esm --main-fields=main,module",
-    "build": "node esbuild.mjs",
+    "build": "run-s 'build:*'",
+    "build:esbuild": "node esbuild.mjs",
+    "build:lib": "cp -a ../../node_modules/@netapplabs/smb-js/lib dist/",
     "clean": "rm -rf dist && rm -rf node_modules",
     "run": "node dist/out.js"
   },

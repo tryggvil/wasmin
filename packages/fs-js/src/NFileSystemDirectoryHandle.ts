@@ -18,6 +18,11 @@ export class NFileSystemDirectoryHandle extends NFileSystemHandle implements Fil
         super(adapter);
         this.secretStore = secretStore;
         this._externalHandleCache = {};
+        if ((adapter as any).stat) {
+            (this as any).stat = async () => {
+                return await (this.adapter as any).stat();
+            };
+        }
     }
     static MOUNTED_HANDLE_FILE_LINK_SUFFIX = ".link";
     secretStore: any;

@@ -367,7 +367,7 @@ export class OpenDirectoryIterator implements Resource, AsyncDisposable {
                 const s = await statable.stat();
                 const got_inode = s.inode;
                 if (got_inode) {
-                    inode = got_inode;
+                    inode = BigInt(got_inode);
                 }
             }
             let ftype: DescriptorType = "unknown";

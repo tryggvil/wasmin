@@ -3,6 +3,7 @@ import { parseUrl } from "./util.js";
 import indexeddb from "./adapters/indexeddb.js";
 import memory from "./adapters/memory.js";
 import { FileSystemDirectoryHandle } from "./index.js";
+import { normalize, sep } from "node:path";
 
 type providerFunc = (
     url: string,
@@ -45,13 +46,10 @@ export async function getDirectoryHandleByURL(
             pathToProviderFunc = lastPath;
         }
         const adapterHandle = await provFunc(pathToProviderFunc, secretStore);
-        if (url.startsWith("nfs:")) {
-            const urlParts = url.split("/");
-            let lastPath = urlParts[urlParts.length-1];
-            if (lastPath.includes("?")) {
-                let lastPaths = lastPath.split("?");
-                lastPath = lastPaths[lastPaths.length-1];
-            }
+        if (url.startsWith("nfs://") || url.startsWith("smb://")) {
+            const urlParts = url.split("?");
+            const pathParts = urlParts[0].split("/");
+            const lastPath = pathParts.findLast((value) => value || undefined);
             // @ts-ignore
             adapterHandle.name = lastPath;
             // @ts-ignore

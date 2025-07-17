@@ -32,8 +32,13 @@ import process from "node:process";
 
 import { s3 } from "@netapplabs/s3-fs-js";
 import { nfs } from "@netapplabs/nfs-js";
-// @ts-ignore
-//import { SmbDirectoryHandle } from "@netapplabs/smb-js";
+
+let smb: (path: string) => Promise<FileSystemDirectoryHandle>;
+try {
+    smb = (require("@netapplabs/smb-js-napi")).smb;
+} catch (e: any) {
+    shellDebug("require @netapplabs/smb-js-napi failed with:", e);
+}
 
 import { github } from "@netapplabs/github-fs-js";
 import { parseArgs } from "node:util";
@@ -51,14 +56,6 @@ const textDecoder = new TextDecoder();
 
 const cols = process.stdout.columns;
 const rows = process.stdout.rows;
-
-/*
-export function smb(path: string): FileSystemDirectoryHandle {
-    const handle = new SmbDirectoryHandle(path);
-    // @ts-ignore
-    return handle;
-}
-*/
 
 const rawModeListener = async function (rawMode: boolean): Promise<void> {
     shellDebug("node rawModeListener, setRawMode ", rawMode);
@@ -552,8 +549,10 @@ export async function startNodeShell(rootfsDriver?: any, env?: Record<string, st
         RegisterProvider("github", github);
         // @ts-ignore
         RegisterProvider("nfs", nfs);
-        // @ts-ignore
-        //RegisterProvider("smb", smb);
+        if (smb) {
+            // @ts-ignore
+            RegisterProvider("smb", smb);
+        }
 
         if (!isBun()) {
             RegisterProvider("node", node);
@@ -578,7 +577,7 @@ export async function startNodeShell(rootfsDriver?: any, env?: Record<string, st
         env["LC_CTYPE"] = "UTF-8";
         env["COMMAND_MODE"] = "unix2003";
         env["FORCE_COLOR"] = "true";
-        env["PROMPT_INDICATOR"] = "wasmin> ";
+        env["PROMPT_INDICATOR"] = " wasmin> ";
         env["FORCE_COLOR"] = "true";
         //env["FORCE_HYPERLINK"] = "true";
         env["USER"] = "none";

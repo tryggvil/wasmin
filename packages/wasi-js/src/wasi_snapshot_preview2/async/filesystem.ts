@@ -467,10 +467,10 @@ async function populateDescriptorStat(fd: number, fHandle: FileSystemHandle): Pr
     if ("stat" in fHandle) {
         const statable = fHandle as unknown as Statable;
         const s = await statable.stat();
-        size = s.size;
+        size = BigInt(s.size);
         const got_inode = s.inode;
         if (got_inode) {
-            inode = got_inode;
+            inode = BigInt(got_inode);
         }
         const got_atime = s.accessedTime;
         if (got_atime) {

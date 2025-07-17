@@ -3,7 +3,9 @@
   "version": "0.7.0",
   "scripts": {
     "start": "bun src/index.ts",
-    "build": "node esbuild.mjs",
+    "build": "run-s 'build:*'",
+    "build:esbuild": "node esbuild.mjs",
+    "build:lib": "cp -a ../../node_modules/@netapplabs/smb-js/lib dist/",
     "build-tsc": "tsc -p .",
     "build-bun": "bun build.ts",
     "build-dummy": "echo build",
@@ -18,7 +20,8 @@
     "@chialab/esbuild-plugin-meta-url": "^0.18.2",
     "@netapplabs/tsconfig": "^0.7.0",
     "bun-types": "^1.2.4",
-    "esbuild": "^0.25.0"
+    "esbuild": "^0.25.0",
+    "npm-run-all": "^4.1.5"
   },
   "dependencies": {
     "@netapplabs/bun-fs-js": "^0.7.0",

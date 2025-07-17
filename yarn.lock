@@ -1844,6 +1844,7 @@ __metadata:
     esbuild: "npm:^0.25.0"
     get-random-values: "npm:^3.0.0"
     node-fetch: "npm:^3.3.2"
+    npm-run-all: "npm:^4.1.5"
     web-file-polyfill: "npm:^1.0.4"
   languageName: unknown
   linkType: soft
@@ -1875,6 +1876,7 @@ __metadata:
     esbuild: "npm:^0.25.0"
     esbuild-plugin-text-replace: "npm:^1.3.0"
     esbuild-plugin-transform: "npm:^0.5.0"
+    npm-run-all: "npm:^4.1.5"
   languageName: unknown
   linkType: soft
 
@@ -2003,12 +2005,34 @@ __metadata:
     "@netapplabs/nfs-js": "npm:^0.7.1"
     "@netapplabs/node-fs-js": "npm:^0.7.0"
     "@netapplabs/s3-fs-js": "npm:^0.7.0"
+    "@netapplabs/smb-js-napi": "npm:^0.8.1"
     "@netapplabs/tsconfig": "npm:^0.7.0"
     "@netapplabs/wasi-js": "npm:^0.7.0"
     chalk: "npm:^5.4.1"
     npm-run-all: "npm:^4.1.5"
   languageName: unknown
   linkType: soft
+
+"@netapplabs/smb-js-napi@npm:^0.8.1, @netapplabs/smb-js-napi@workspace:packages/smb-js-napi":
+  version: 0.0.0-use.local
+  resolution: "@netapplabs/smb-js-napi@workspace:packages/smb-js-napi"
+  dependencies:
+    "@netapplabs/fs-js": "npm:^0.7.0"
+    "@netapplabs/smb-js": "npm:^0.9.6"
+    "@netapplabs/tsconfig": "npm:^0.7.0"
+    "@netapplabs/wasi-js": "npm:^0.7.0"
+    esbuild: "npm:^0.25.0"
+    npm-run-all: "npm:^4.1.5"
+    vitest: "npm:^3.0.7"
+  languageName: unknown
+  linkType: soft
+
+"@netapplabs/smb-js@npm:^0.9.6":
+  version: 0.9.6
+  resolution: "@netapplabs/smb-js@npm:0.9.6::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40netapplabs%2Fsmb-js%2F0.9.6%2F0e0b1cb7e7e818d386d5ed6db8035a64693d0ac9"
+  checksum: 10c0/9b62c1b00171dc497c68113e830d733fc11093fd48d6f43a54c5b79ed31c55f86089878e71f9c4cf523f594866f5398550eaa0d19ce1b9157a6c36ec4593005c
+  languageName: node
+  linkType: hard
 
 "@netapplabs/tsconfig@npm:^0.7.0, @netapplabs/tsconfig@workspace:packages/tsconfig":
   version: 0.0.0-use.local
@@ -2092,6 +2116,7 @@ __metadata:
   dependencies:
     "@changesets/cli": "npm:^2.29.2"
     crypto-browserify: "npm:^3.12.1"
+    npm-run-all: "npm:^4.1.5"
     path-browserify: "npm:^1.0.1"
     prettier: "npm:^3.5.2"
     punycode: "npm:^2.3.1"
@@ -10704,7 +10729,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vitest@npm:^3.2.4":
+"vitest@npm:^3.0.7, vitest@npm:^3.2.4":
   version: 3.2.4
   resolution: "vitest@npm:3.2.4"
   dependencies:

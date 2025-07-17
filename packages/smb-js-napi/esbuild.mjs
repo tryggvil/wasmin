@@ -19,13 +19,10 @@
 import esbuild from 'esbuild';
 import metaUrlPlugin from '@chialab/esbuild-plugin-meta-url';
 
+
 await esbuild.build({
   entryPoints: [
-    "src/index.ts",
-    "src/entry.ts",
-    "src/wasmComponentWorkerThread.ts",
-    "src/wasmCoreWorkerThread.ts",
-    "src/wasiWorkerThread.ts"
+    "src/index.ts"
   ],
   bundle: true,
   //outfile: 'dist/index.js',
@@ -33,9 +30,7 @@ await esbuild.build({
   //outbase: 'src',
   loader: {'.wasm': 'file', '.node': 'file'},
   sourcemap: true,
-  //plugins: [envPlugin],
   plugins: [metaUrlPlugin({emit: true})],
-  //plugins: [excludeImportMetaUrl()],
   format: "esm",
   platform: "node",
   external: [
@@ -52,8 +47,16 @@ await esbuild.build({
     "node:path",
     "node:os",
     "node:fs",
-    "node:util",
     "node:fs/promises",
-    "bun",
-  ]
+    "node:util",
+    "bun"
+  ],
+  banner:{
+    js: `
+    import * as path from 'node:path';
+    import { fileURLToPath } from 'url';
+    `
+  }
 })
+
+//import { createRequire } from 'module';const require = createRequire(import.meta.url);".to_string();

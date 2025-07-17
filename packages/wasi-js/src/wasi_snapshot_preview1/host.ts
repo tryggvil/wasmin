@@ -510,7 +510,7 @@ export class WasiSnapshotPreview1AsyncHost implements WasiSnapshotPreview1Async 
             const s = await statable.stat();
             const got_inode = s.inode;
             if (got_inode) {
-                dot_inode = s.inode;
+                dot_inode = BigInt(s.inode);
             }
         }
         // type conversion because buf is ptr<u8> but expects ptr<Dirent>
@@ -577,7 +577,7 @@ export class WasiSnapshotPreview1AsyncHost implements WasiSnapshotPreview1Async 
                 const s = await statable.stat();
                 const got_inode = s.inode;
                 if (got_inode) {
-                    entry_inode = s.inode;
+                    entry_inode = BigInt(s.inode);
                 }
             }
             const itemSize = Dirent.size + nameLen;

@@ -1,0 +1,14 @@
+{
+    "extends": "@netapplabs/tsconfig",
+    "compilerOptions": {
+        "lib": [
+            "dom",
+            "webworker",
+            "esnext"
+        ],
+        "outDir": "./dist"
+    },
+    "include": [
+        "./src"
+    ]
+}

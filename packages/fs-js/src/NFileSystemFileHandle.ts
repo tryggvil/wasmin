@@ -27,6 +27,11 @@ export function isDeno() {
 export class NFileSystemFileHandle extends NFileSystemHandle implements FileSystemFileHandle {
     constructor(adapter: FileSystemFileHandle) {
         super(adapter);
+        if ((adapter as any).stat) {
+            (this as any).stat = async () => {
+                return await (this.adapter as any).stat();
+            };
+        }
     }
 
     async createSyncAccessHandle(): Promise<FileSystemSyncAccessHandle> {

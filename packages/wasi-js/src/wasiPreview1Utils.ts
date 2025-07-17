@@ -82,13 +82,12 @@ export async function populateFileStat(buffer: ArrayBuffer, handle: Handle, file
         const s = await statable.stat();
         const got_inode = s.inode;
         if (got_inode) {
-            inode = got_inode;
+            inode = BigInt(got_inode);
         }
-        const creationTime = s.creationTime;
-        ctime = creationTime;
-        mtime = s.modifiedTime;
-        atime = s.accessedTime;
-        size = s.size;
+        ctime = BigInt(s.creationTime);
+        mtime = BigInt(s.modifiedTime);
+        atime = BigInt(s.accessedTime);
+        size = BigInt(s.size);
     } else if (isFile) {
         const fhandle = handle as unknown as FileSystemFileHandle;
         const file = await fhandle.getFile();
