@@ -13,6 +13,7 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  TURBO_TELEMETRY_DISABLED: 1
 
 jobs:
   build:
@@ -48,8 +49,6 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-    - name: yarn
-      run: npm install --global yarn
     - name: Setup go
       uses: actions/setup-go@v5
       with:
@@ -59,22 +58,34 @@ jobs:
       uses: oven-sh/setup-bun@v2
     - name: deno
       uses: denoland/setup-deno@v2
-    - name: Set up GH Package Registry Auth
-      run: echo "@netapplabs:registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
     - name: yarn-install
-      run: yarn install
+      run: |
+        corepack enable
+        corepack prepare yarn --activate
+        yarn install
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Build
       run: yarn build
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Test
       run: yarn test
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: build-exe-bun
       run: ./build-exe-bun.sh
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: build-exe-deno
       run: ./build-exe-deno.sh
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: build-exe-node
       run: ./build-exe-node.sh
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     # Upload binary
     - name: Upload wasmin-bun binary to release on main
       if: ${{github.ref == 'refs/heads/main'}}

@@ -4,14 +4,14 @@
   "source": "src/index.ts",
   "main": "dist/app.js",
   "scripts": {
-    "build-seapip": "npm-run-all build-seapip:*",
+    "build-seapip": "npm-run-all 'build-seapip:*'",
     "build-seapip:aesbuild": "node esbuild.mjs",
     "build-seapip:copy-assets": "./sea-copy-assets.sh",
     "build-seapip:js": "tsc -p .",
     "build-seapip:pip-prep": "node -r @pipobscure/sea ./dist/app.js build-sea",
     "build-seapip:sea": "npm exec @pipobscure/sea",
     "build": "node esbuild.mjs",
-    "build-sea": "npm-run-all build-sea:*",
+    "build-sea": "npm-run-all 'build-sea:*'",
     "build-sea:build": "node esbuild.mjs",
     "build-sea:postassets": "node sea-config.mjs",
     "start": "node --enable-source-maps dist/index.js",
@@ -20,9 +20,9 @@
   },
   "devDependencies": {
     "@chialab/esbuild-plugin-meta-url": "^0.18.2",
+    "@netapplabs/tsconfig": "^0.7.0",
     "@pipobscure/sea": "1.0.5",
     "@types/node": "^22.13.8",
-    "@netapplabs/tsconfig": "^0.7.0",
     "esbuild": "^0.25.0",
     "npm-run-all": "^4.1.5",
     "postject": "^1.0.0-alpha.6"

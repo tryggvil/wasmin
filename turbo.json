@@ -2,7 +2,8 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".next/**", "component/**"]
+      "outputs": ["dist/**", ".next/**", "component/**"],
+      "passThroughEnv": ["GITHUB_TOKEN"]
     },
     "lint": {
       "outputs": []
@@ -10,7 +11,8 @@
     "dev": {
       "cache": false
     },
-	"test": {
+    "test": {
+      "passThroughEnv": ["GITHUB_TOKEN"]
     }
   }
 }

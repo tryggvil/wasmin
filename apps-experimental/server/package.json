@@ -12,7 +12,7 @@
     "start-trace": "node --trace-warnings --enable-source-maps dist/server/index.js",
     "dev": "vite",
     "node-dev": "ts-node-dev --experimental-specifier-resolution=node --respawn --transpile-only --exit-child ./src/server/index.ts",
-    "bun-dev": "run-p bun-watch:*",
+    "bun-dev": "run-p 'bun-watch:*'",
     "bun-watch:server": "bun src/server/index.ts",
     "bun-watch:client": "bun dev",
     "tsc": "tsc"

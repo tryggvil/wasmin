@@ -346,9 +346,10 @@ export class DenoFolderHandle
     const stat = await fs.lstat(path, { bigint: true }).catch((err) => {
       if (err.code !== "ENOENT") throw err;
     });
-    const isDirectory = stat?.isDirectory();
-    if (stat && isDirectory) return new DenoFolderHandle(path, name);
-    if (stat && !isDirectory) throw new TypeMismatchError();
+    if (stat) {
+      if (stat.isDirectory()) return new DenoFolderHandle(path, name);
+      else throw new TypeMismatchError();
+    }
     if (!options.create) throw new NotFoundError();
     await fs.mkdir(path);
     const stat2 = await fs.lstat(path, { bigint: true }).catch((err) => {

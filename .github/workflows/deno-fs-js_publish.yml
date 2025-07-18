@@ -31,16 +31,18 @@ jobs:
           scope: '@netapplabs'
       - name: setup-bun
         uses: oven-sh/setup-bun@v2
-      - name: yarn
-        run: npm install --global yarn
-      - name: Set up GH Package Registry Auth
-        run: echo "@netapplabs:registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" > ~/.npmrc
       - name: yarn-install
-        run: yarn install --frozen-lock-file
+        run: |
+          corepack enable
+          corepack prepare yarn --activate
+          yarn install --frozen-lock-file
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build
         run: yarn build
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Deno
         uses: denoland/setup-deno@v2
@@ -50,6 +52,8 @@ jobs:
       - name: Run Deno Tests
         run: deno task test
         working-directory: packages/deno-fs-js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup git
         run: |
@@ -63,6 +67,8 @@ jobs:
       - name: Build package
         run: npm run build --prefix .
         working-directory: packages/deno-fs-js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish package
         run: npm publish --prefix .

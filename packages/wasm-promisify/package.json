@@ -29,8 +29,8 @@
     "src"
   ],
   "devDependencies": {
-    "@types/node": "^22.10.2",
-    "@netapplabs/tsconfig": "^0.7.0"
+    "@netapplabs/tsconfig": "^0.7.0",
+    "@types/node": "^22.10.2"
   },
   "dependencies": {
     "wasmati": "^0.2.0"
