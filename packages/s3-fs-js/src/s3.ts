@@ -452,7 +452,8 @@ function addParamKeyValueToUrl(baseUrl: string, addParamKeyValue: string): strin
 function parseS3Url(s3Url: string, secretStore?: any, defaultRegion = "us-east-1"): { s3config: S3Config; newUrl: string } {
     let newUrl = s3Url;
     const forcePathStyle = true;
-    const sUrl = parseUrl(s3Url);
+    const fixedUrl = s3Url.replace(/\+/g, "%2B");
+    const sUrl = parseUrl(fixedUrl);
     const sInsecure = sUrl.searchParams.get("insecure") || "false";
     let insecure = false;
     if (sInsecure == "true") {
@@ -551,6 +552,7 @@ function parseS3Url(s3Url: string, secretStore?: any, defaultRegion = "us-east-1
             credentials: {
                 accessKeyId: awsAccessKeyId,
                 secretAccessKey: awsSecretAccessKey,
+                sessionToken: sUrl.searchParams.get("sessionToken") || undefined,
             },
             tls: !insecure,
             //requestHandler: requestHandler,
@@ -599,6 +601,7 @@ function parseS3Url(s3Url: string, secretStore?: any, defaultRegion = "us-east-1
     sConfig.cacheTTL = cacheTTL;
     sConfig.supportsRangeRequests = supportsRangeRequests;
     sConfig.hiddenFileDirMode = hiddenFileDirMode;
+    s3Debug("newUrl: ", newUrl);
     return { s3config: sConfig, newUrl: newUrl };
 
 }
